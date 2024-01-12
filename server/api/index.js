@@ -6,8 +6,8 @@ router.get('/health', (req, res, next) => {
 });
 
 router.use('/tasks', require('./tasks'));
-// router.use('/locations', require('./locations'));
-// router.use('/users', require('./users'));
-// router.use('/groups', require('./groups'));
+router.use('/locations', require('./locations'));
+router.use('/users', require('./users'));
+router.use('/groups', require('./groups'));
 
 module.exports = router;
