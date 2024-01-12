@@ -26,29 +26,29 @@ async function createTables() {
         title VARCHAR(50) NOT NULL,
         details TEXT NOT NULL,
         priority INTEGER NOT NULL,
-        tasktype VARCHAR(50) NOT NULL,
+        task_type VARCHAR(50) NOT NULL,
         deadline DATE NOT NULL,
         created DATE NOT NULL,
         location_id INTEGER
         );
         CREATE TABLE users (
-            user_id SERIAL PRIMARY KEY,
-            firstname VARCHAR(50) NOT NULL,
-            lastname VARCHAR(50) NOT NULL,
-            group_id INTEGER NOT NULL,
-            );
-            CREATE TABLE groups (
-                group_id SERIAL PRIMARY KEY,
-                name VARCHAR(50) NOT NULL,
-                type VARCHAR(50) NOT NULL,
-                );
-                CREATE TABLE locations (
-                    location_id SERIAL PRIMARY KEY,
-                    street VARCHAR(150) NOT NULL,
-                    city VARCHAR(100) NOT NULL,
-                    state CHAR(2) NOT NULL,
-                    zipcode INTEGER(5) NOT NULL
-                    );
+        user_id SERIAL PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        group_id INTEGER NOT NULL
+        );
+        CREATE TABLE groups (
+        group_id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL,
+        type VARCHAR(50) NOT NULL
+        );
+        CREATE TABLE locations (
+        location_id SERIAL PRIMARY KEY,
+        street VARCHAR(150) NOT NULL,
+        city VARCHAR(100) NOT NULL,
+        state CHAR(2) NOT NULL,
+        zipcode INTEGER NOT NULL
+        );
         `);
     } catch (error) {
         throw error;
@@ -60,36 +60,38 @@ async function createInitialData() {
     try {
         console.log('Creating Initial Data...');
         await client.query(`
-      INSERT INTO tasks (assigned_to, title, details, priority, task_type, deadline, created, location_id)
-      VALUES
-        (3, 'vacuum apartment', 'charge vacuum beforehand', 2, 'chore', '30-01-2024','10-01-2024', 1),
-        (3, 'do homework', 'check canvas for assignments', 1, 'work', '20-01-2024','10-01-2024', 1),
-        (2, 'QA Lindsay's homework', 'make sure homework deadline is met', 1, 'work', '15-02-2024','10-01-2024', 2)`
-        );
+        INSERT INTO tasks (assigned_to, title, details, priority, task_type, deadline, created, location_id)
+        VALUES
+        (3, 'vacuum apartment', 'charge vacuum beforehand', 2, 'chore', '2024-01-30','2024-01-10', 1),
+        (3, 'do homework', 'check canvas for assignments', 1, 'work', '2024-01-20','2024-01-10', 1),
+        (2, 'QA Lindsays homework', 'make sure homework deadline is met', 1, 'work', '2024-02-15','2024-01-10', 2)
+        `);
+        console.log("did tasks");
         await client.query(`
         INSERT INTO users (first_name, last_name, group_id)
         VALUES
         ('Lindsay', 'Jadow', 1),
         ('Mom', 'Jadow', 1),
         ('Nick', 'Friend', 2),
-        ('Julia', 'Friend', 2)`
-        );
+        ('Julia', 'Friend', 2)
+        `);
+        console.log("did users");
         await client.query(`
         INSERT INTO groups (name, type)
         VALUES
         ('Jadow', 'family'),
         ('Friends', 'friends'),
         ('GHP', 'work')
-        `
-        );
+        `);
+        console.log("did groups");
         await client.query(`
-        INSERT INTO locations (street, city, state, zip)
+        INSERT INTO locations (street, city, state, zipcode)
         VALUES
         ('444 E 86th ST','New York', 'NY', 10028),
         ('120 Park Ave','New York', 'NY', 10165),
         ('415 Brewer Branch','Mill River', 'MA', 01244)
-        `
-        );
+        `);
+        console.log("did locations");
     } catch (error) {
         throw error;
     }
