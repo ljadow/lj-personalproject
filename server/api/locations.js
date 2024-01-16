@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getAllLocations, getLocationById, createLocation, deleteLocation } = require('../db/helpers/locations');
+const { getAllLocations, getLocationById, createLocation, updateLocation, deleteLocation } = require('../db/helpers/locations');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -26,6 +26,15 @@ router.post('/', async (req, res, next) => {
         res.send(locations);
     } catch (err) {
         next(err);
+    }
+});
+
+router.put('/:id', async (req, res, next) => {
+    try {
+        const locations = await updateLocation(req.params.id, req.body);
+        res.send(locations);
+    } catch (error) {
+        next(error);
     }
 });
 

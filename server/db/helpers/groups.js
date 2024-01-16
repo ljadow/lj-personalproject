@@ -49,6 +49,24 @@ const createGroup = async ({ name, type }) => {
     }
 }
 
+const updateGroup = async (id, fields = {}) => {
+    const setString = Object.keys(fields).map((key, index) => `"${key}"=$${index + 1}`).join(', ');
+    if (setString.length === 0) {
+        return;
+    }
+    try {
+        const { rows: [groups] } = await client.query(`
+            UPDATE groups
+            SET ${setString}
+            WHERE group_id=${id}
+            RETURNING *;
+        `, Object.values(fields));
+        return groups;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const deleteGroup = async (group_id) => {
     try {
         const { rows } = await client.query(
@@ -63,4 +81,4 @@ const deleteGroup = async (group_id) => {
     }
 }
 
-module.exports = { getAllGroups, getGroupById, createGroup, deleteGroup }
+module.exports = { getAllGroups, getGroupById, createGroup, updateGroup, deleteGroup }

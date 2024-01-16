@@ -49,6 +49,24 @@ const createLocation = async ({ street, city, state, zipcode }) => {
     }
 }
 
+const updateLocation = async (id, fields = {}) => {
+    const setString = Object.keys(fields).map((key, index) => `"${key}"=$${index + 1}`).join(', ');
+    if (setString.length === 0) {
+        return;
+    }
+    try {
+        const { rows: [locations] } = await client.query(`
+            UPDATE locations
+            SET ${setString}
+            WHERE location_id=${id}
+            RETURNING *;
+        `, Object.values(fields));
+        return locations;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const deleteLocation = async (location_id) => {
     try {
         const { rows } = await client.query(
@@ -63,4 +81,4 @@ const deleteLocation = async (location_id) => {
     }
 }
 
-module.exports = { getAllLocations, getLocationById, createLocation, deleteLocation }
+module.exports = { getAllLocations, getLocationById, createLocation, updateLocation, deleteLocation }

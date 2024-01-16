@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getAllUsers, getUserById, createUser, deleteUser } = require('../db/helpers/users');
+const { getAllUsers, getUserById, createUser, updateUser, deleteUser } = require('../db/helpers/users');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -27,6 +27,15 @@ router.post('/', async (req, res, next) => {
         res.send(users);
     } catch (err) {
         next(err);
+    }
+});
+
+router.put('/:id', async (req, res, next) => {
+    try {
+        const users = await updateUser(req.params.id, req.body);
+        res.send(users);
+    } catch (error) {
+        next(error);
     }
 });
 

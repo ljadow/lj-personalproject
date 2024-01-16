@@ -46,6 +46,24 @@ const createUser = async (body) => {
     }
 }
 
+const updateUser = async (id, fields = {}) => {
+    const setString = Object.keys(fields).map((key, index) => `"${key}"=$${index + 1}`).join(', ');
+    if (setString.length === 0) {
+        return;
+    }
+    try {
+        const { rows: [users] } = await client.query(`
+            UPDATE users
+            SET ${setString}
+            WHERE user_id=${id}
+            RETURNING *;
+        `, Object.values(fields));
+        return users;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const deleteUser = async (user_id) => {
     try {
         const { rows } = await client.query(
@@ -60,4 +78,4 @@ const deleteUser = async (user_id) => {
     }
 }
 
-module.exports = { getAllUsers, getUserById, createUser, deleteUser }
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 // const { authRequired } = require('./utils');
-const { getAllTasks, getTaskById, createTask, deleteTask } = require('../db/helpers/tasks');
+const { getAllTasks, getTaskById, createTask, updateTask, deleteTask } = require('../db/helpers/tasks');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -27,6 +27,15 @@ router.post('/', async (req, res, next) => {
         res.send(tasks);
     } catch (err) {
         next(err);
+    }
+});
+
+router.put('/:id', async (req, res, next) => {
+    try {
+        const tasks = await updateTask(req.params.id, req.body);
+        res.send(tasks);
+    } catch (error) {
+        next(error);
     }
 });
 

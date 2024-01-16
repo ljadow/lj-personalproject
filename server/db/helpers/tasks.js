@@ -49,7 +49,25 @@ const createTask = async ({ assigned_to, title, details, priority, task_type, de
     }
 }
 
-async function deleteTask(task_id) {
+const updateTask = async (id, fields = {}) => {
+    const setString = Object.keys(fields).map((key, index) => `"${key}"=$${index + 1}`).join(', ');
+    if (setString.length === 0) {
+        return;
+    }
+    try {
+        const { rows: [tasks] } = await client.query(`
+            UPDATE tasks
+            SET ${setString}
+            WHERE task_id=${id}
+            RETURNING *;
+        `, Object.values(fields));
+        return tasks;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const deleteTask = async (task_id) => {
     try {
         const { rows } = await client.query(
         `
@@ -63,4 +81,4 @@ async function deleteTask(task_id) {
     }
 }
 
-module.exports = { getAllTasks, getTaskById, createTask, deleteTask }
+module.exports = { getAllTasks, getTaskById, createTask, updateTask, deleteTask }
