@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import Navigation from './components/navigation'
+import Tasks from './components/tasks'
+import Groups from './components/groups'
 import './App.css'
 
 function App() {
@@ -6,14 +10,11 @@ function App() {
 
   return (
     <>
-      <div>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+    <Navigation />
+    <Routes>
+      <Route path='/tasks' element={<Tasks/>}/>
+      <Route path='/groups' element={<Groups/>}/>
+    </Routes>
     </>
   )
 }
