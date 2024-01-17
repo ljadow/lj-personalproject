@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Navigation from './components/navigation'
 import Tasks from './components/tasks'
 import Groups from './components/groups'
+import SingleTask from './components/singletask'
 import './App.css'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route path='/tasks' element={<Tasks/>}/>
       <Route path='/groups' element={<Groups/>}/>
+      <Route path='/tasks/:id' element={<SingleTask />} />
     </Routes>
     </>
   )

@@ -2,30 +2,38 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function GroupList() {
-    const [groups, setGroups] = useState([]);
+    const [count, setCount] = useState([]);
 
     useEffect(() => {
-        async function fetchGroups() {
+        async function fetchCounts() {
             try {
-                const req = await fetch("http://localhost:8080/api/groups");
+                const req = await fetch("http://localhost:8080/api/user-group/count");
                 const res = await req.json();
-                setGroups(res)
+                setCount(res)
+                console.log("count")
                 console.log(res)
             } catch (error) {
                 console.log(error.message)
             }
-        } fetchGroups();
+        } fetchCounts();
     }, [])
 
-    return( 
-        <>
-        {groups.map((group)=>{
-            return(
-                <>
-                <ul>{group.name}</ul>
-                </>
-            )
-        })}
-        </>
+    return (
+        <table>
+            <tr>
+                <th>Group Name</th>
+                <th>Type</th>
+                <th># Users</th>
+            </tr>
+            {count.map((ele) => {
+                return (
+                    <tr>
+                        <td>{ele.group_name}</td>
+                        <td>{ele.group_type}</td>
+                        <td>{ele.num_users}</td>
+                    </tr>
+                )
+            })}
+        </table>
     )
 }

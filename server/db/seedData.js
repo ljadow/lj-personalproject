@@ -40,6 +40,7 @@ async function createTables() {
         );
         CREATE TABLE tasks (
             task_id SERIAL PRIMARY KEY,
+            status BOOLEAN DEFAULT false,
             assigned_to INTEGER REFERENCES users(user_id) NOT NULL,
             title VARCHAR(50) NOT NULL,
             details TEXT NOT NULL,
@@ -85,11 +86,11 @@ async function createInitialData() {
         `);
         console.log("did locations");
         await client.query(`
-        INSERT INTO tasks (assigned_to, title, details, priority, task_type, deadline, created, location_id)
+        INSERT INTO tasks (assigned_to, status, title, details, priority, task_type, deadline, created, location_id)
         VALUES
-        (3, 'vacuum apartment', 'charge vacuum beforehand', 2, 'chore', '2024-01-30','2024-01-10', 1),
-        (3, 'do homework', 'check canvas for assignments', 1, 'work', '2024-01-20','2024-01-10', 1),
-        (2, 'QA Lindsays homework', 'make sure homework deadline is met', 1, 'work', '2024-02-15','2024-01-10', 2)
+        (3, false, 'vacuum apartment', 'charge vacuum beforehand', 2, 'chore', '2024-01-30','2024-01-10', 1),
+        (3, true, 'do homework', 'check canvas for assignments', 1, 'work', '2024-01-20','2024-01-10', 1),
+        (2, false, 'QA Lindsays homework', 'make sure homework deadline is met', 1, 'work', '2024-02-15','2024-01-10', 2)
         `);
         console.log("did tasks");
     } catch (error) {
