@@ -9,5 +9,6 @@ router.use('/tasks', require('./tasks'));
 router.use('/locations', require('./locations'));
 router.use('/users', require('./users'));
 router.use('/groups', require('./groups'));
+router.use('/user-group', require('./user-group'));
 
 module.exports = router;

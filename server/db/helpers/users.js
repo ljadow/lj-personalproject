@@ -31,24 +31,6 @@ const getUserById = async (user_id) => {
     }
 }
 
-//join table
-const getUserByGroupId = async (group_id) => {
-    try {
-        const {
-            rows: [users]
-        } = await client.query(
-            `
-                SELECT us.user_id as user_id, us.first_name as user_fn, us.last_name as user_ln, gr.group_id as group_id, gr.name as group_name, gr.type as group_type
-                FROM users us INNER JOIN groups gr ON us.group_id=gr.group_id
-                WHERE gr.group_id=${group_id};
-            `
-        )
-        return users;
-    } catch (error) {
-        throw error
-    }
-}
-
 const createUser = async (body) => {
     try {
         const { rows: [users] } = await client.query(
@@ -96,4 +78,4 @@ const deleteUser = async (user_id) => {
     }
 }
 
-module.exports = { getAllUsers, getUserById, getUserByGroupId, createUser, updateUser, deleteUser }
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser }
