@@ -31,17 +31,17 @@ const getTaskById = async (task_id) => {
     }
 }
 
-const createTask = async ({ completed, assigned_to, title, details, task_type, deadline, created, location_id }) => {
+const createTask = async ({ completed, assigned_to, title, details, task_type, deadline, location_id }) => {
     try {
         const {
             rows: [tasks],
         } = await client.query (
             `
-                INSERT INTO tasks(completed, assigned_to, title, details, task_type, deadline, created, location_id)
-                VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+                INSERT INTO tasks(completed, assigned_to, title, details, task_type, deadline, location_id)
+                VALUES($1, $2, $3, $4, $5, $6, $7)
                 RETURNING *;
             `,
-            [completed, assigned_to, title, details, task_type, deadline, created, location_id]
+            [completed, assigned_to, title, details, task_type, deadline, location_id]
         )
         return tasks
     } catch (error) {

@@ -45,8 +45,7 @@ async function createTables() {
             title VARCHAR(50) NOT NULL,
             details TEXT,
             task_type VARCHAR(50),
-            deadline DATE,
-            created DATE,
+            deadline DATE NOT NULL,
             location_id INTEGER REFERENCES locations(location_id)
         );
         `);
@@ -79,17 +78,18 @@ async function createInitialData() {
         await client.query(`
         INSERT INTO locations (street, city, state, zipcode)
         VALUES
+        ('None','','',0),
         ('444 E 86th ST','New York', 'NY', 10028),
         ('120 Park Ave','New York', 'NY', 10165),
         ('415 Brewer Branch','Mill River', 'MA', 01244)
         `);
         console.log("did locations");
         await client.query(`
-        INSERT INTO tasks (assigned_to, completed, title, details, task_type, deadline, created, location_id)
+        INSERT INTO tasks (assigned_to, completed, title, details, task_type, deadline, location_id)
         VALUES
-        (3, false, 'vacuum apartment', 'charge vacuum beforehand', 'chore', '2024-01-30','2024-01-10', 1),
-        (3, true, 'do homework', 'check canvas for assignments', 'work', '2024-01-20','2024-01-10', 1),
-        (2, false, 'QA Lindsays homework', 'make sure homework deadline is met', 'work', '2024-02-15','2024-01-10', 2)
+        (3, false, 'vacuum apartment', 'charge vacuum beforehand', 'chore', '2024-01-30', 1),
+        (3, true, 'do homework', 'check canvas for assignments', 'work', '2024-01-20', 1),
+        (2, false, 'QA Lindsays homework', 'make sure homework deadline is met', 'work', '2024-02-15', 2)
         `);
         console.log("did tasks");
     } catch (error) {

@@ -1,28 +1,28 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState, Context, useContext } from "react"
-import baseUrl from "./context"
+import { useEffect, useState, useContext } from "react"
+import { baseUrl } from "./context"
 
-const url=useContext(baseUrl)
-
-function editTask(task_id) {
-    fetch(`${url}/tasks/${task_id}`, {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        method: "PATCH",
-        body: JSON.stringify({
-            available: false,
+async function handleEdit(taskid) {
+    try {
+        const response = await fetch(`http://localhost:8080/api/tasks/${taskid}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({
+                completed: true,
+            })
         })
-    })
-
-    return (
-        <>
-        </>
-    )
+        const APIpost = await response.json();
+        console.log(APIpost)
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+    window.location.reload()
 }
 
 export default function SingleTask() {
     const [task, setTask] = useState({})
+    const [status,setStatus] = useState(false)
     const [deadline, setDeadline] = useState("")
     const [location, setLocation] = useState("")
     const [street, setStreet] = useState("")
@@ -34,6 +34,7 @@ export default function SingleTask() {
     const [last, setLast] = useState("")
     const { id } = useParams()
     const navigate = useNavigate()
+    const url = useContext(baseUrl)
 
     useEffect(() => {
         async function fetchTask() {
@@ -44,7 +45,7 @@ export default function SingleTask() {
                 setDeadline(data.deadline.substring(0, 10))
                 setLocation(data.location_id)
                 setUser(data.assigned_to)
-                console.log(user)
+                setStatus(data.completed)
             }
             catch (error) {
                 console.log(error)
@@ -55,7 +56,7 @@ export default function SingleTask() {
 
     async function fetchLocation() {
         try {
-            const res = await fetch(`http://localhost:8080/api/locations/${location}`)
+            const res = await fetch(`${url}/locations/${location}`)
             const data = await res.json()
             setStreet(data.street)
             setCity(data.city)
@@ -70,11 +71,11 @@ export default function SingleTask() {
 
     async function fetchUser() {
         try {
-            const res = await fetch(`http://localhost:8080/api/users/${user}`)
+            const res = await fetch(`${url}/users/${user}`)
             const data = await res.json()
             setName(data.first_name)
-            setLast(data.last_name.substring(0, 1))
-            console.log(name)
+            const lastname = data.last_name
+            setLast(lastname.substring(0, 1))
         }
         catch (error) {
             console.log(error)
@@ -82,9 +83,10 @@ export default function SingleTask() {
     }
     fetchUser();
 
-    async function deleteTask(taskId){
+
+    async function deleteTask(taskId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+            const response = await fetch(`${url}/tasks/${taskId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -105,18 +107,20 @@ export default function SingleTask() {
                     <th>Assigned to</th>
                     <th>Deadline</th>
                     <th>Task Type</th>
+                    <th>Status</th>
                 </tr>
                 <tr>
                     <td>{name} {last}.</td>
                     <td>{deadline}</td>
                     <td>{task.task_type}</td>
+                    {status?<td>Done</td>:<td>Incomplete</td>}
                 </tr>
             </table>
-            {location > 0 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Provided"}
+            {location > 1 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Provided"}
             {task.details ? <p>Details: {task.details}</p> : "No details Provided"}
-            <button onClick={() => { editTask(task.task_id) }}>Edit Task</button>
-            <button onClick={() => {deleteTask(task.task_id);navigate("/tasks") }}>Delete Task</button>
-            <br/><button onClick={() => { navigate(`/tasks`) }}>Back to All</button>
+            {!status?<button onClick={() => { handleEdit(task.task_id) }}>Mark as Complete</button>:""}
+            <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}>Delete Task</button>
+            <button onClick={() => { navigate(`/tasks`) }}>Back to All</button>
         </div>
     )
 }
