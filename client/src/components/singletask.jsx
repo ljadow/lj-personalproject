@@ -1,9 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from "react"
+import { useEffect, useState, Context, useContext } from "react"
+import baseUrl from "./context"
+
+const url=useContext(baseUrl)
 
 function editTask(task_id) {
-
-    fetch(`http://localhost:8080/api/tasks/${task_id}`, {
+    fetch(`${url}/tasks/${task_id}`, {
         headers: {
             'Content-Type': 'application/json',
         },
@@ -17,8 +19,6 @@ function editTask(task_id) {
         <>
         </>
     )
-
-
 }
 
 export default function SingleTask() {
@@ -38,7 +38,7 @@ export default function SingleTask() {
     useEffect(() => {
         async function fetchTask() {
             try {
-                const res = await fetch(`http://localhost:8080/api/tasks/${id}`)
+                const res = await fetch(`${url}/tasks/${id}`)
                 const data = await res.json()
                 setTask(data)
                 setDeadline(data.deadline.substring(0, 10))
@@ -82,6 +82,21 @@ export default function SingleTask() {
     }
     fetchUser();
 
+    async function deleteTask(taskId){
+        try {
+            const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: "DELETE",
+            })
+            const result = await response.json();
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <div id='SingleTask'>
             <h2 key={task.task_id}>{task.title}</h2>
@@ -100,7 +115,8 @@ export default function SingleTask() {
             {location > 0 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Provided"}
             {task.details ? <p>Details: {task.details}</p> : "No details Provided"}
             <button onClick={() => { editTask(task.task_id) }}>Edit Task</button>
-            <button onClick={() => { navigate(`/tasks`) }}>Back to All</button>
+            <button onClick={() => {deleteTask(task.task_id);navigate("/tasks") }}>Delete Task</button>
+            <br/><button onClick={() => { navigate(`/tasks`) }}>Back to All</button>
         </div>
     )
 }
