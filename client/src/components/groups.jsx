@@ -1,6 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+function createNewGroup() {
+    async function newGroup() {
+        try {
+            const req = await fetch("http://localhost:8080/api/user-group/count");
+            const res = await req.json();
+            setCount(res)
+            console.log("count")
+            console.log(res)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+}
+
 export default function GroupList() {
     const [count, setCount] = useState([]);
 
