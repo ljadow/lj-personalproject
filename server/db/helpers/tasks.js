@@ -31,6 +31,22 @@ const getTaskById = async (task_id) => {
     }
 }
 
+const getTasksByUserId = async (user_id) => {
+    try {
+        const { rows } = await client.query(
+            `
+                SELECT *
+                FROM tasks
+                WHERE assigned_to=${user_id};
+            `
+        )
+        return rows;
+    } catch (error) {
+        throw error
+    }
+}
+
+
 const createTask = async ({ completed, assigned_to, title, details, task_type, deadline, location_id }) => {
     try {
         const {
@@ -81,4 +97,4 @@ const deleteTask = async (task_id) => {
     }
 }
 
-module.exports = { getAllTasks, getTaskById, createTask, updateTask, deleteTask }
+module.exports = { getAllTasks, getTaskById, getTasksByUserId, createTask, updateTask, deleteTask }

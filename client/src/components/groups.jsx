@@ -17,6 +17,7 @@ function createNewGroup() {
 
 export default function GroupList() {
     const [count, setCount] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         async function fetchCounts() {

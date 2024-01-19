@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { deleteTask } from './taskUpdates';
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([]);
@@ -88,21 +89,6 @@ export default function TaskList() {
         }
     }
 
-    async function deleteTask(taskId) {
-        try {
-            const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                method: "DELETE",
-            })
-            const result = await response.json();
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
-
     return (
         <>
             <button onClick={setForm}>Add New Task</button>
@@ -162,16 +148,28 @@ export default function TaskList() {
                     </form>
                 }
 
-                {tasks.map((task) => {
-                    return (
-                        <>
-                            <br /><input type="checkbox" ></input>
-                            <label key={task.task_id}>{task.title}</label>
-                            <button onClick={() => { navigate(`/tasks/${task.task_id}`) }}>Details</button>
-                            <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}>Delete</button>
-                        </>
-                    )
-                })}<br />
+                <table>
+                    <tr>
+                        <th>Tasks</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    {tasks.map((task) => {
+                        return (
+                            <>
+                                <tr>
+                                    {/* <br /><input type="checkbox" ></input> */}
+                                    <td><label key={task.task_id}>{task.title}</label></td>
+                                    <td>{task.completed ? "Done" : "To Do"}</td>
+                                    <td><button onClick={() => { navigate(`/tasks/${task.task_id}`) }}>Details</button>
+                                        <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}>Delete</button>
+                                    </td>
+                                </tr>
+                            </>
+                        )
+                    })}<br />
+
+                </table>
             </ul>
         </>
     )

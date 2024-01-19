@@ -31,6 +31,22 @@ const getUserById = async (user_id) => {
     }
 }
 
+const getUserByGroupId = async (group_id) => {
+    try {
+        const { rows }
+            = await client.query(
+                `
+                SELECT *
+                FROM users
+                WHERE group_id =${group_id};
+            `
+            )
+        return rows;
+    } catch (error) {
+        throw error
+    }
+}
+
 const createUser = async (body) => {
     try {
         const { rows: [users] } = await client.query(
@@ -78,4 +94,4 @@ const deleteUser = async (user_id) => {
     }
 }
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser }
+module.exports = { getAllUsers, getUserById, getUserByGroupId, createUser, updateUser, deleteUser }
