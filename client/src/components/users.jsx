@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BiPencil,BiTrashAlt } from "react-icons/bi";
 
 async function deleteUser(userId) {
     try {
@@ -76,6 +77,7 @@ export default function userList() {
         fetchUsers();
         fetchGroups();
     }, [])
+    console.log(users)
 
     return (
         <>
@@ -112,7 +114,7 @@ export default function userList() {
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th># of Tasks</th>
-                    <th>Reassign group</th>
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
                 {users.map((user) => {
@@ -120,9 +122,9 @@ export default function userList() {
                         <tr>
                             <td>{user.first}</td>
                             <td>{user.last}</td>
-                            <td>{user.tasks}</td>
-                            <td></td>
-                            <td><button onClick={()=>{deleteUser(user.id); window.location.reload()}}>X</button></td>
+                            {user.tasks > 0 ? <td onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
+                            <td><button ><BiPencil/></button></td>
+                            <td><button onClick={() => { deleteUser(user.id); window.location.reload() }}><BiTrashAlt /></button></td>
                         </tr>
                     )
                 })}

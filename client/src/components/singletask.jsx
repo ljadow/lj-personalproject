@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react"
 import markComplete from './taskUpdates'
 import { deleteTask, markIncomplete } from './taskUpdates'
 import { baseUrl } from "./context"
+import { BiPencil,BiTrashAlt, BiCircle, BiCheck  } from "react-icons/bi";
 
 export default function SingleTask() {
     const [task, setTask] = useState({})
@@ -86,9 +87,10 @@ export default function SingleTask() {
             </table>
             {/* {location > 1 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Specified"} */}
             {task.details ? <p>Details: {task.details}</p> : ""}
-            {!completed ? <button onClick={() => { markComplete(task.task_id) }}>Mark as Done</button> : <button onClick={() => { markIncomplete(task.task_id) }}>Reopen Task</button>}
-            <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}>Delete Task</button>
-            <button onClick={() => { navigate(`/tasks`) }}>Back to All</button>
+            {!completed ? <button onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button> : <button onClick={() => { markIncomplete(task.task_id) }}><BiCircle/> Reopen Task</button>}
+            <br/><br/>
+            <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}><BiTrashAlt/></button>
+            <button onClick={() => { navigate(-1) }}>Go Back</button>
         </div>
     )
 }

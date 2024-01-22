@@ -18,9 +18,9 @@ const getTaskCountbyUser = async () => {
     try {
         const { rows } = await client.query(
             `
-                SELECT users.first_name as first, users.last_name as last, COUNT(tasks.task_id) as tasks, users.user_id as id
+                SELECT users.first_name as first, users.last_name as last, COUNT(tasks.task_id) as tasks, users.user_id as id, users.group_id as group_id
                 FROM tasks RIGHT JOIN users ON tasks.assigned_to=users.user_id 
-                GROUP BY users.first_name, users.last_name, users.user_id
+                GROUP BY users.first_name, users.last_name, users.user_id, users.group_id
                 ORDER BY tasks DESC, users.first_name ASC;
                 `
         )
