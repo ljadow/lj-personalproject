@@ -14,6 +14,22 @@ const getAllTasks = async () => {
     }
 }
 
+const getTaskCountbyUser = async () => {
+    try {
+        const { rows } = await client.query(
+            `
+                SELECT users.first_name as first, users.last_name as last, COUNT(tasks.task_id) as tasks 
+                FROM tasks RIGHT JOIN users ON tasks.assigned_to=users.user_id 
+                GROUP BY users.first_name, users.last_name
+                ORDER BY tasks DESC, users.first_name ASC;
+                `
+        )
+        return rows;
+    } catch (error) {
+        throw error
+    }
+}
+
 const getTaskById = async (task_id) => {
     try {
         const {
@@ -35,9 +51,9 @@ const getTasksByUserId = async (user_id) => {
     try {
         const { rows } = await client.query(
             `
-                SELECT *
-                FROM tasks
-                WHERE assigned_to=${user_id};
+            SELECT *
+            FROM tasks
+            WHERE assigned_to=${user_id};
             `
         )
         return rows;
@@ -46,12 +62,11 @@ const getTasksByUserId = async (user_id) => {
     }
 }
 
-
 const createTask = async ({ completed, assigned_to, title, details, task_type, deadline, location_id }) => {
     try {
         const {
             rows: [tasks],
-        } = await client.query (
+        } = await client.query(
             `
                 INSERT INTO tasks(completed, assigned_to, title, details, task_type, deadline, location_id)
                 VALUES($1, $2, $3, $4, $5, $6, $7)
@@ -86,7 +101,7 @@ const updateTask = async (id, fields = {}) => {
 const deleteTask = async (task_id) => {
     try {
         const { rows } = await client.query(
-        `
+            `
         DELETE FROM tasks 
         WHERE task_id=$1 
         RETURNING *
@@ -97,4 +112,4 @@ const deleteTask = async (task_id) => {
     }
 }
 
-module.exports = { getAllTasks, getTaskById, getTasksByUserId, createTask, updateTask, deleteTask }
+module.exports = { getAllTasks, getTaskById, getTasksByUserId, getTaskCountbyUser, createTask, updateTask, deleteTask }
