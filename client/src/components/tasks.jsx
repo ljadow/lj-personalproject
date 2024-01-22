@@ -134,14 +134,14 @@ export default function TaskList() {
                             value={deadline}
                             onChange={(e) => { setDeadline(e.target.value) }}
                         />
-                        <br />
+                        {/* <br />
                         Location: <select onChange={(e) => { setLocation(e.target.value) }}>
                             {locations.map((location) => {
                                 return (
                                     <option value={location.location_id}  >{location.street}</option>
                                 )
                             })}
-                        </select>
+                        </select> */}
                         <br />
                         <button type="submit" onClick={handleSubmit}>Add to List</button>
                         {error ? <p id="taskCreateError">Task could not be created<br />Double-check all field inputs</p> : ""}
@@ -149,26 +149,27 @@ export default function TaskList() {
                 }
 
                 <table>
-                    <tr>
-                        <th>Tasks</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                    {tasks.map((task) => {
-                        return (
-                            <>
-                                <tr>
-                                    {/* <br /><input type="checkbox" ></input> */}
-                                    <td><label key={task.task_id}>{task.title}</label></td>
-                                    <td>{task.completed ? "Done" : "To Do"}</td>
-                                    <td><button onClick={() => { navigate(`/tasks/${task.task_id}`) }}>Details</button>
-                                        <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}>Delete</button>
-                                    </td>
-                                </tr>
-                            </>
-                        )
-                    })}<br />
-
+                    <thead>
+                        <tr>
+                            <th>Tasks</th>
+                            <th>Status</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tasks.map((task) => {
+                            return (
+                                <>
+                                    <tr>
+                                        {/* <br /><input type="checkbox" ></input> */}
+                                        <td onClick={() => { navigate(`/tasks/${task.task_id}`) }}><label key={task.task_id}>{task.title}</label></td>
+                                        <td>{task.completed ? "Done" : "To Do"}</td>
+                                        <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}>X</button>
+                                    </tr>
+                                </>
+                            )
+                        })}<br />
+                    </tbody>
                 </table>
             </ul>
         </>

@@ -84,7 +84,7 @@ export default function SingleTask() {
                     {completed ? <td>Done</td> : <td>Incomplete</td>}
                 </tr>
             </table>
-            {location > 1 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Specified"}
+            {/* {location > 1 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Specified"} */}
             {task.details ? <p>Details: {task.details}</p> : ""}
             {!completed ? <button onClick={() => { markComplete(task.task_id) }}>Mark as Done</button> : <button onClick={() => { markIncomplete(task.task_id) }}>Reopen Task</button>}
             <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}>Delete Task</button>
