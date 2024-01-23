@@ -6,6 +6,7 @@ import Groups from './components/groups'
 import Users from './components/users'
 import SingleTask from './components/singletask'
 import UserTasks from './components/userTasks'
+import EditUser from './components/edituser'
 import './App.css'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Route path='/tasks' element={<Tasks/>}/>
       <Route path='/groups' element={<Groups/>}/>
       <Route path='/users' element={<Users/>}/>
+      <Route path='/users/:id' element={<EditUser />} />
       <Route path='/tasks/:id' element={<SingleTask />} />
       <Route path='/tasks/user/:id' element={<UserTasks />} />
     </Routes>

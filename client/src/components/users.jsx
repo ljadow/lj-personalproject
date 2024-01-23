@@ -2,20 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BiPencil,BiTrashAlt } from "react-icons/bi";
 
-async function deleteUser(userId) {
-    try {
-        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            method: "DELETE",
-        })
-        const result = await response.json();
-    }
-    catch (error) {
-        console.log(error)
-    }
-}
+
 
 export default function userList() {
     const navigate = useNavigate();
@@ -23,37 +10,12 @@ export default function userList() {
     const [groups, setGroups] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [error, setError] = useState("");
+    const [deleteError, setDeleteError] = useState("");
+
     //form variables
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [groupid, setGroupid] = useState(null);
-
-    function setForm() {
-        setShowForm(!showForm)
-        setError("")
-    }
-
-    async function addUser(event) {
-        event.preventDefault();
-        setError("");
-        try {
-            const response = await fetch("http://localhost:8080/api/users", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", },
-                body: JSON.stringify({
-                    first_name: firstname,
-                    last_name: lastname,
-                    group_id: groupid
-                })
-            })
-            const APIpost = await response.json();
-            window.location.reload()
-        }
-        catch (error) {
-            setError(error.message)
-            console.log(error)
-        }
-    }
 
     useEffect(() => {
         async function fetchUsers() {
@@ -77,7 +39,50 @@ export default function userList() {
         fetchUsers();
         fetchGroups();
     }, [])
-    console.log(users)
+
+    function setForm() {
+        setShowForm(!showForm)
+        setError("")
+    }
+
+    async function deleteUser(userId) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: "DELETE",
+            })
+            const result = await response.json();
+            window.location.reload();
+        }
+        catch (error) {
+            setDeleteError("Cannot delete user if tasks are assigned to them")
+            console.log(error)
+        }
+    }
+
+    async function addUser(event) {
+        event.preventDefault();
+        setError("");
+        try {
+            const response = await fetch("http://localhost:8080/api/users", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", },
+                body: JSON.stringify({
+                    first_name: firstname,
+                    last_name: lastname,
+                    group_id: groupid
+                })
+            })
+            const APIpost = await response.json();
+            window.location.reload()
+        }
+        catch (error) {
+            setError(error.message)
+            console.log(error)
+        }
+    }
 
     return (
         <>
@@ -114,8 +119,7 @@ export default function userList() {
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th># of Tasks</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Actions</th>
                 </tr>
                 {users.map((user) => {
                     return (
@@ -123,12 +127,13 @@ export default function userList() {
                             <td>{user.first}</td>
                             <td>{user.last}</td>
                             {user.tasks > 0 ? <td onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
-                            <td><button ><BiPencil/></button></td>
-                            <td><button onClick={() => { deleteUser(user.id); window.location.reload() }}><BiTrashAlt /></button></td>
+                            <td><button onClick={()=>{navigate(`/users/${user.id}`)}}><BiPencil/></button>
+                            <button onClick={() => { deleteUser(user.id)}}><BiTrashAlt /></button></td>
                         </tr>
                     )
                 })}
             </table>
+            {deleteError}
         </>
     )
 }

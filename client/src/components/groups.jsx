@@ -10,6 +10,7 @@ export default function GroupList() {
     const [showForm, setShowForm] = useState(false);
     const [showId, setShowId] = useState(null);
     const [error, setError] = useState("");
+    const [deleteError, setDeleteError] = useState("");
     const [groupname, setGroupname] = useState("");
     const [grouptype, setGrouptype] = useState("");
 
@@ -75,8 +76,10 @@ export default function GroupList() {
                 method: "DELETE",
             })
             const result = await response.json();
+            window.location.reload();
         }
         catch (error) {
+            setDeleteError("Cannot delete group that has users")
             console.log(error)
         }
     }
@@ -123,14 +126,13 @@ export default function GroupList() {
                                 </td>
                                 <td>{ele.group_type}</td>
                                 <td>{ele.num_users}</td>
-                                <td><button onClick={() => {
-                                    deleteGroup(ele.group_id); window.location.reload()
-                                }}><BiTrashAlt /></button></td>
+                                <td><button onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button></td>
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
+            {deleteError}
         </>
     )
 }
