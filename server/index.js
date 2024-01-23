@@ -14,10 +14,10 @@ app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
 
-// // init cookie-parser
-// const { COOKIE_SECRET } = require('./secrets');
-// const cookieParser = require('cookie-parser');
-// app.use(cookieParser(COOKIE_SECRET));
+// init cookie-parser
+const { COOKIE_SECRET } = require('./secrets');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser(COOKIE_SECRET));
 
 // init db client
 const client = require('./db/client');

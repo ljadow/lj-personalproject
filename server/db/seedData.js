@@ -5,6 +5,7 @@ async function dropTables() {
     try {
         console.log('Dropping All Tables...');
         await client.query(`
+        DROP TABLE IF EXISTS admins;
         DROP TABLE IF EXISTS tasks;
         DROP TABLE IF EXISTS locations;
         DROP TABLE IF EXISTS users;
@@ -47,6 +48,11 @@ async function createTables() {
             task_type VARCHAR(50),
             deadline DATE NOT NULL,
             location_id INTEGER REFERENCES locations(location_id)
+        );
+        CREATE TABLE admins (
+            admin_id SERIAL PRIMARY KEY,
+            username VARCHAR(15) NOT NULL,
+            password VARCHAR(15) NOT NULL
         );
         `);
     } catch (error) {
@@ -92,6 +98,12 @@ async function createInitialData() {
         (2, false, 'QA Lindsays homework', 'make sure homework deadline is met', 'work', '2024-02-15', 2)
         `);
         console.log("did tasks");
+        await client.query(`
+        INSERT INTO admins (username, password)
+        VALUES
+        ('admin', 'admin')
+        `);
+        console.log("did admins");
     } catch (error) {
         throw error;
     }

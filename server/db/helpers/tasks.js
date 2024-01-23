@@ -6,7 +6,8 @@ const getAllTasks = async () => {
         const { rows }
             = await client.query(`
             SELECT *
-            FROM tasks;
+            FROM tasks
+            ORDER BY completed, deadline;
         `)
         return rows
     } catch (error) {
