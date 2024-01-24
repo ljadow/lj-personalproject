@@ -10,14 +10,14 @@ app.use(morgan('dev'));
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-// init cors
-const cors = require('cors');
-app.use(cors());
-
 // init cookie-parser
 const { COOKIE_SECRET } = require('./secrets');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser(COOKIE_SECRET));
+
+// init cors
+const cors = require('cors');
+app.use(cors());
 
 // init db client
 const client = require('./db/client');

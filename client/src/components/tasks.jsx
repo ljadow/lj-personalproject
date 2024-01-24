@@ -1,12 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteTask } from './taskUpdates';
-import { BiTrashAlt, BiInfoCircle } from "react-icons/bi";
+import { BiTrashAlt, BiInfoCircle, BiCheckSquare, BiSquare } from "react-icons/bi";
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([]);
     const [users, setUsers] = useState([]);
-    const [locations, setLocations] = useState([]);
     const [showForm, setShowForm] = useState(false);
     //variables for the form submit
     const [assigned, setAssigned] = useState(null)
@@ -20,6 +19,7 @@ export default function TaskList() {
     const navigate = useNavigate();
     //search query
     const [query, setQuery] = useState("");
+    const [status, setStatus] = useState(null);
 
     useEffect(() => {
         async function fetchTasks() {
@@ -81,10 +81,10 @@ export default function TaskList() {
     const filteredTasks = useMemo(() =>
         tasks.filter((task) => (
             task.title.toLowerCase().includes(query.toLowerCase())
+            // || task.completed==status
         )),
-        [tasks, query]
+        [tasks, query, status]
     );
-
 
     return (
         <>
@@ -135,17 +135,26 @@ export default function TaskList() {
                     {error ? <p id="taskCreateError">Task could not be created<br />Double-check all field inputs</p> : ""}
                 </form>
             }
+            <br />
             <input
                 label="Search"
                 placeholder="Search by task"
                 onChange={e => setQuery(e.target.value)}
                 value={query}
             />
+            {/* <br />
+            <label>Filter by Status</label>
+            <select onChange={(e) => {dropFilter(e)}}>
+                <option value="null">All</option>
+                <option value="true" >Done</option>
+                <option value="false" >To Do</option>
+            </select> */}
             <table>
                 <thead>
                     <tr>
-                        <th>Tasks</th>
                         <th>Status</th>
+                        <th>Tasks</th>
+                        <th>Deadline</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -154,9 +163,9 @@ export default function TaskList() {
                         return (
                             <>
                                 <tr>
-                                    {/* <br /><input type="checkbox" ></input> */}
+                                    <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td>
                                     <td>{task.title}</td>
-                                    <td>{task.completed ? "Done" : "To Do"}</td>
+                                    <td>{new Date(task.deadline).toString().substring(4,15)}</td>
                                     <td><button onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>                                      <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button></td>
                                 </tr>
                             </>

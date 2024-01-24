@@ -7,8 +7,8 @@ const SALT_ROUNDS = 10;
 
 const {
 	createAdmin,
-    getAllAdmins,
-    getAdminbyUsername
+	getAllAdmins,
+	getAdminbyUsername
 } = require("../db/helpers/admins");
 
 // GET - /api/admins - get all admins
@@ -39,8 +39,8 @@ router.post("/register", async (req, res, next) => {
 		});
 
 		delete admin.password;
-		res.send({ token, admin});
-        
+		res.send({ token, admin });
+
 	} catch (error) {
 		next(error);
 	}
@@ -51,7 +51,6 @@ router.post("/login", async (req, res, next) => {
 		const { username, password } = req.body;
 		const admin = await getAdminbyUsername(username);
 		const validPassword = await bcrypt.compare(password, admin.password);
-
 		if (validPassword) {
 			const token = jwt.sign(admin, JWT_SECRET);
 
@@ -60,13 +59,11 @@ router.post("/login", async (req, res, next) => {
 				httpOnly: true,
 				signed: true
 			});
-
 			delete admin.password;
-
-			res.send({ token, admin});
+			res.send({ token, admin });
 		}
 	} catch (error) {
-		next(error);
+		throw new Error(`failed to login: ${error.message}`)
 	}
 });
 

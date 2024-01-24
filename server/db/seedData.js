@@ -51,8 +51,8 @@ async function createTables() {
         );
         CREATE TABLE admins (
             admin_id SERIAL PRIMARY KEY,
-            username VARCHAR(15) NOT NULL,
-            password VARCHAR(15) NOT NULL
+            username VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL
         );
         `);
     } catch (error) {
@@ -101,7 +101,7 @@ async function createInitialData() {
         await client.query(`
         INSERT INTO admins (username, password)
         VALUES
-        ('admin', 'admin')
+        ('admin1', '$2b$10$G1lU6l2.r93lyLPmWOytWuaa7dpekF0wXxYYLfYuIif3gMM7sFZA.')
         `);
         console.log("did admins");
     } catch (error) {
