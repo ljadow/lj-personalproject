@@ -192,7 +192,7 @@ export default function TaskList() {
                                         <input
                                             type="checkbox"
                                             defaultChecked={task.completed}
-                                            onClick={(e) => { setInit(task.completed); setStatus(e.target.checked); changeStatus(task.task_id) }}
+                                            onClick={(e) => { console.log("before status:", status);setStatus(e.target.checked); changeStatus(task.task_id);console.log("after status:", status)}}
                                         >
                                         </input>
                                     </td>

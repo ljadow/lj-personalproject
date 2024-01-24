@@ -7,7 +7,6 @@ async function dropTables() {
         await client.query(`
         DROP TABLE IF EXISTS admins;
         DROP TABLE IF EXISTS tasks;
-        DROP TABLE IF EXISTS locations;
         DROP TABLE IF EXISTS users;
         DROP TABLE IF EXISTS groups;
     `);
@@ -31,13 +30,6 @@ async function createTables() {
             first_name VARCHAR(50) NOT NULL,
             last_name VARCHAR(50) NOT NULL,
             group_id INTEGER REFERENCES groups(group_id) NOT NULL
-        );
-        CREATE TABLE locations (
-            location_id SERIAL PRIMARY KEY,
-            street VARCHAR(150) NOT NULL,
-            city VARCHAR(100) NOT NULL,
-            state CHAR(2) NOT NULL,
-            zipcode INTEGER NOT NULL
         );
         CREATE TABLE tasks (
             task_id SERIAL PRIMARY KEY,
@@ -81,15 +73,6 @@ async function createInitialData() {
         ('Julia', 'Friend', 2)
         `);
         console.log("did users");
-        await client.query(`
-        INSERT INTO locations (street, city, state, zipcode)
-        VALUES
-        ('None','','',0),
-        ('444 E 86th ST','New York', 'NY', 10028),
-        ('120 Park Ave','New York', 'NY', 10165),
-        ('415 Brewer Branch','Mill River', 'MA', 01244)
-        `);
-        console.log("did locations");
         await client.query(`
         INSERT INTO tasks (assigned_to, completed, title, details, task_type, deadline, location_id)
         VALUES

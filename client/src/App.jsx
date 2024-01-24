@@ -13,20 +13,21 @@ import './App.css'
 
 function App() {
   const [token, setToken] = useState(null)
-  
+
   return (
     <>
-
-      {token && <><h1>My Tasks</h1> <Navigation setToken={setToken} /></>}
-      <Routes> 
+      <h1>My Tasks</h1>
+      <Navigation setToken={setToken} />
+      {/* {token && <><h1>My Tasks</h1><Navigation setToken={setToken} /></>} */}
+      <Routes>
         <Route path='/' element={<Homepage />} />
-        <Route path='/tasks' element={<Tasks />} />
-        <Route path='/groups' element={<Groups />} />
-        <Route path='/users' element={<Users />} />
+        <Route path='/tasks' element={<Tasks token={token} />} />
+        <Route path='/groups' element={<Groups token={token} />} />
+        <Route path='/users' element={<Users token={token} />} />
         <Route path='/login' element={<Login setToken={setToken} />} />
-        <Route path='/users/:id' element={<EditUser />} />
-        <Route path='/tasks/:id' element={<SingleTask />} />
-        <Route path='/tasks/user/:id' element={<UserTasks />} />
+        <Route path='/users/:id' element={<EditUser token={token} />} />
+        <Route path='/tasks/:id' element={<SingleTask token={token} />} />
+        <Route path='/tasks/user/:id' element={<UserTasks token={token} />} />
       </Routes>
     </>
   )

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BiPencil, BiTrashAlt } from "react-icons/bi";
 
 
-export default function GroupList() {
+export default function GroupList({token}) {
     const [count, setCount] = useState([]);
     const [users, setUsers] = useState([]);
     const [show, setShow] = useState(false);

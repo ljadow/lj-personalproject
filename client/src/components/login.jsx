@@ -33,18 +33,18 @@ export default function Login({ setToken }) {
         <>
             <h1>Login</h1>
             <form onSubmit={logIn}>
+                <label for="username">Username: </label>
                 <input
                     id="username"
                     autoFocus
-                    placeholder='username'
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)} />
+                    onChange={(e) => setUsername(e.target.value)} /><br/>
+                <label for="password">Password: </label>
                 <input
                     id="password"
                     type="password"
-                    placeholder='password'
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} />
+                    onChange={(e) => setPassword(e.target.value)} /><br/>
                 <button type="submit">Submit</button>
             </form>
         </>
