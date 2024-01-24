@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login({ token, setToken }) {
+export default function Login({ setToken }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const nav = useNavigate();
@@ -9,7 +9,6 @@ export default function Login({ token, setToken }) {
     const logIn = async (e) => {
         e.preventDefault();
         try {
-            console.log("in logIn fn component")
             const response = await fetch(`http://localhost:8080/api/admins/login`, {
                 method: "POST",
                 headers: {
@@ -21,11 +20,11 @@ export default function Login({ token, setToken }) {
                 })
             });
             const result = await response.json();
-            console.log(result);
             setToken(result.token)
+            nav("/tasks")
             return result
-        } catch (err) {
-            console.error("error logging in: ",error)
+        } catch (error) {
+            console.error("error logging in: ", error)
             throw new Error(`failed to login: ${error.message}`)
         }
     }
@@ -51,3 +50,4 @@ export default function Login({ token, setToken }) {
         </>
     );
 }
+

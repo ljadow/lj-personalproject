@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BiPencil,BiTrashAlt } from "react-icons/bi";
+import { BiPencil, BiTrashAlt } from "react-icons/bi";
 
 
 
@@ -107,7 +107,7 @@ export default function userList() {
                 Group: <select onChange={(e) => { setGroupid(e.target.value) }}>
                     <option selected="true" disabled="disabled">Group Name</option>
                     {groups.map((group) => {
-                        return (<option value={group.group_id}>{group.name}</option>)
+                        return (<option key={group.group_id} value={group.group_id}>{group.name}</option>)
                     })}
                 </select>
                 <br />
@@ -115,23 +115,27 @@ export default function userList() {
                 {error ? <p id="taskCreateError">User could not be created<br />Double-check all field inputs</p> : ""}
             </form>}
             <table>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th># of Tasks</th>
-                    <th>Actions</th>
-                </tr>
-                {users.map((user) => {
-                    return (
-                        <tr>
-                            <td>{user.first}</td>
-                            <td>{user.last}</td>
-                            {user.tasks > 0 ? <td onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
-                            <td><button onClick={()=>{navigate(`/users/${user.id}`)}}><BiPencil/></button>
-                            <button onClick={() => { deleteUser(user.id)}}><BiTrashAlt /></button></td>
-                        </tr>
-                    )
-                })}
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th># of Tasks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map((user) => {
+                        return (
+                            <tr key={user.id}>
+                                <td>{user.first}</td>
+                                <td>{user.last}</td>
+                                {user.tasks > 0 ? <td onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
+                                <td><button onClick={() => { navigate(`/users/${user.id}`) }}><BiPencil /></button>
+                                    <button onClick={() => { deleteUser(user.id) }}><BiTrashAlt /></button></td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
             </table>
             {deleteError}
         </>

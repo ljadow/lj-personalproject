@@ -1,13 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Navigation() {
+export default function Navigation({ token, setToken }) {
+    const nav = useNavigate();
+    async function logOut() {
+        try {
+            const response = await fetch(`http://localhost:8080/api/admins/logout`, {
+                method: "POST"
+            });
+            const result = await response.json();
+            setToken(null)
+            nav("/")
+            return result
+        } catch (error) {
+            console.error("error logging out: ", error)
+            throw new Error(`failed to logout: ${error.message}`)
+        }
+    }
+
     return (
         <nav id="navBar">
-            <h1>Task List</h1>
             <Link to='/tasks'>Tasks</Link>
             <Link to='/groups'>Groups</Link>
             <Link to='/users'>Users</Link>
-            <Link to='/login'>Login</Link>
+            {/* <Link to='/login'>Login</Link> */}
+            <button id="logout" onClick={() => { logOut() }}>Log Out</button>
         </nav>
     )
 }

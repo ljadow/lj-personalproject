@@ -41,7 +41,7 @@ async function createTables() {
         );
         CREATE TABLE tasks (
             task_id SERIAL PRIMARY KEY,
-            completed BOOLEAN DEFAULT false,
+            completed BOOLEAN DEFAULT false NOT NULL,
             assigned_to INTEGER REFERENCES users(user_id) NOT NULL,
             title VARCHAR(50) NOT NULL,
             details TEXT,

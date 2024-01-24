@@ -13,7 +13,6 @@ export default function TaskList() {
     const [details, setDetails] = useState("")
     const [tasktype, setTasktype] = useState("")
     const [deadline, setDeadline] = useState("")
-    const [location, setLocation] = useState(null)
     const [error, setError] = useState("")
     //navigate
     const navigate = useNavigate();
@@ -49,7 +48,7 @@ export default function TaskList() {
         setError("")
     }
 
-    async function handleSubmit(event) {
+    async function addTask(event) {
         event.preventDefault();
         setError("");
         try {
@@ -78,6 +77,31 @@ export default function TaskList() {
         }
     }
 
+    function setInit(complete) {
+        console.log("in init")
+        setStatus(complete)
+        console.log(status)
+        console.log("after init")
+    }
+
+    async function changeStatus(id) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", },
+                body: JSON.stringify({
+                    completed: status
+                })
+            })
+            const APIpost = await response.json();
+            // window.location.reload()
+        }//try close
+        catch (error) {
+            setError(error.message)
+            console.log(error)
+        }
+    }
+
     const filteredTasks = useMemo(() =>
         tasks.filter((task) => (
             task.title.toLowerCase().includes(query.toLowerCase())
@@ -90,12 +114,12 @@ export default function TaskList() {
         <>
             <button onClick={setForm}>Add New Task</button>
             {showForm &&
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={addTask}>
                     * indicates a required field <br />
                     *Assign to: <select onChange={(e) => { setAssigned(e.target.value) }}>
                         <option selected="true" disabled="disabled">User</option>
                         {users.map((user) => {
-                            return (<option value={user.user_id}>{user.first_name} {user.last_name}</option>)
+                            return (<option key={user.user_id} value={user.user_id}>{user.first_name} {user.last_name}</option>)
                         })}
                     </select>
                     <br />
@@ -131,7 +155,7 @@ export default function TaskList() {
                         onChange={(e) => { setDeadline(e.target.value) }}
                     />
                     <br />
-                    <button type="submit" onClick={handleSubmit}>Add to List</button>
+                    <button type="submit" onClick={addTask}>Add to List</button>
                     {error ? <p id="taskCreateError">Task could not be created<br />Double-check all field inputs</p> : ""}
                 </form>
             }
@@ -162,15 +186,26 @@ export default function TaskList() {
                     {filteredTasks.map((task) => {
                         return (
                             <>
-                                <tr>
-                                    <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td>
+                                <tr key={task.task_id}>
+                                    {/* <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td> */}
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            defaultChecked={task.completed}
+                                            onClick={(e) => { setInit(task.completed); setStatus(e.target.checked); changeStatus(task.task_id) }}
+                                        >
+                                        </input>
+                                    </td>
                                     <td>{task.title}</td>
-                                    <td>{new Date(task.deadline).toString().substring(4,15)}</td>
-                                    <td><button onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>                                      <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button></td>
+                                    <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
+                                    <td>
+                                        <button onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
+                                        <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
+                                    </td>
                                 </tr>
                             </>
                         )
-                    })}<br />
+                    })}
                 </tbody>
             </table>
         </>
