@@ -9,6 +9,8 @@ import Login from './components/login'
 import SingleTask from './components/singletask'
 import UserTasks from './components/userTasks'
 import EditUser from './components/edituser'
+import EditGroup from './components/editgroup'
+import { BiListCheck } from 'react-icons/bi'
 import './App.css'
 
 function App() {
@@ -16,7 +18,7 @@ function App() {
 
   return (
     <>
-      <h1>My Tasks</h1>
+      <h1><BiListCheck/> My Tasks</h1>
       <Navigation setToken={setToken} />
       {/* {token && <><h1>My Tasks</h1><Navigation setToken={setToken} /></>} */}
       <Routes>
@@ -25,6 +27,7 @@ function App() {
         <Route path='/groups' element={<Groups token={token} />} />
         <Route path='/users' element={<Users token={token} />} />
         <Route path='/login' element={<Login setToken={setToken} />} />
+        <Route path='/groups/:id' element={<EditGroup token={token} />} />
         <Route path='/users/:id' element={<EditUser token={token} />} />
         <Route path='/tasks/:id' element={<SingleTask token={token} />} />
         <Route path='/tasks/user/:id' element={<UserTasks token={token} />} />

@@ -77,12 +77,12 @@ export default function TaskList() {
         }
     }
 
-    function setInit(complete) {
-        console.log("in init")
-        setStatus(complete)
-        console.log(status)
-        console.log("after init")
-    }
+    // function setInit(complete) {
+    //     console.log("in init")
+    //     setStatus(complete)
+    //     console.log(status)
+    //     console.log("after init")
+    // }
 
     async function changeStatus(id) {
         try {
@@ -155,7 +155,7 @@ export default function TaskList() {
                         onChange={(e) => { setDeadline(e.target.value) }}
                     />
                     <br />
-                    <button type="submit" onClick={addTask}>Add to List</button>
+                    <button type="submit" onClick={addTask}>Add Task</button>
                     {error ? <p className="createError">Task could not be created<br />Double-check all field inputs</p> : ""}
                 </form>
             }
@@ -185,31 +185,46 @@ export default function TaskList() {
                 </thead>
                 <tbody>
                     {filteredTasks.map((task) => {
+                        async function handleCheck(event) {
+                            try {
+                                const response = await fetch(`http://localhost:8080/api/tasks/${task.task_id}`, {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json", },
+                                    body: JSON.stringify({
+                                        completed: event
+                                    })
+                                })
+                                const post = await response.json();
+                            } catch (error) {
+                                console.error(error)
+                                throw new Error(`${error.message}`)
+                            }
+                        }                           
                         return (
-                            <>
-                                <tr key={task.task_id}>
-                                    {/* <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td> */}
-                                    <td>
-                                        <input
-                                            id="taskStatus"
-                                            type="checkbox"
-                                            defaultChecked={task.completed}
-                                            onClick={(e) => { console.log("before status:", status); setStatus(e.target.checked); changeStatus(task.task_id); console.log("after status:", status) }}
-                                        >
-                                        </input>
-                                    </td>
-                                    <td id="taskTitle">{task.title}</td>
-                                    <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
-                                    <td>
-                                        <button className="iconButton" title="See Info" onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
-                                        <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
-                                    </td>
-                                </tr>
-                            </>
-                        )
+                    <>
+                        <tr key={task.task_id}>
+                            <td>
+                                <input
+                                    id="taskStatus"
+                                    type="checkbox"
+                                    defaultChecked={task.completed}
+                                    onChange={(e)=>{handleCheck(e.target.checked)}}
+                                >
+                                </input>
+                            </td>
+                            <td id="taskTitle">{task.title}</td>
+                            <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
+                            <td>
+                                <button className="iconButton" title="See Info" onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
+                                <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
+                            </td>
+                        </tr>
+                    </>
+                    )
                     })}
                 </tbody>
             </table>
         </>
     )
+    {/* <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td> */ }
 }

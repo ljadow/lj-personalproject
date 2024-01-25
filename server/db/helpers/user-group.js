@@ -39,7 +39,7 @@ const getUserCountByGroup = async () => {
                 SELECT gr.group_id as group_id, gr.name as group_name, gr.type as group_type, COUNT(us.user_id) as num_users
                 FROM users us RIGHT JOIN groups gr ON us.group_id=gr.group_id
                 GROUP BY gr.group_id
-                ORDER BY 4 desc
+                ORDER BY 4 desc, 2 asc;
             `
         )
         return rows;

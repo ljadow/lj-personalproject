@@ -1,25 +1,21 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  font-weight: 500;
   color: #389ae0;
   text-decoration: inherit;
+  padding: 0.5em .75em;
+
 }
+
 a:hover {
-  color: #4af898;
+  color: #205d88;
+  border-radius: 10px;
+  font-family: inherit;
+  background-color: #e4eced;
+  cursor: pointer;
+  transition: background-color 0.15s;
 }
 
 body {
@@ -32,7 +28,7 @@ body {
 
 h1 {
   font-size: 2.5em;
-  line-height: 1.1;
+  line-height: 1;
   margin: .25em;
 }
 
@@ -44,20 +40,23 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #ced5d6;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.15s;
 }
 
 button:hover {
-  border-color: #84f9fd;
+  background-color: #e4eced;
 }
-button:focus,
-button:focus-visible {
+
+button:focus, button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
 /* ^ preset react styling  --- V personal styling */
+#logout{
+  
+}
 
 #navBar {
   display: flex;

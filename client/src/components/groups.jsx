@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { BiPlus, BiTrashAlt } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { BiPlus, BiTrashAlt, BiPencil } from "react-icons/bi";
 
-
-export default function GroupList({token}) {
+export default function GroupList({ token }) {
     const [count, setCount] = useState([]);
     const [users, setUsers] = useState([]);
     const [show, setShow] = useState(false);
@@ -12,6 +12,7 @@ export default function GroupList({token}) {
     const [deleteError, setDeleteError] = useState("");
     const [groupname, setGroupname] = useState("");
     const [grouptype, setGrouptype] = useState("");
+    const navigate = useNavigate();
 
     function setForm() {
         setShowForm(!showForm)
@@ -49,16 +50,20 @@ export default function GroupList({token}) {
         event.preventDefault();
         setError("");
         try {
-            const response = await fetch("http://localhost:8080/api/groups", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", },
-                body: JSON.stringify({
-                    name: groupname,
-                    type: grouptype
+            if (groupname.length > 50 || grouptype.length > 50) {
+                setError("Inputs must be fewer than 50 characters")
+            } else {
+                const response = await fetch("http://localhost:8080/api/groups", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", },
+                    body: JSON.stringify({
+                        name: groupname,
+                        type: grouptype
+                    })
                 })
-            })
-            const APIpost = await response.json();
-            window.location.reload()
+                const APIpost = await response.json();
+                window.location.reload()
+            }
         }
         catch (error) {
             setError(error.message)
@@ -103,7 +108,7 @@ export default function GroupList({token}) {
                     onChange={(e) => { setGrouptype(e.target.value) }}
                 /><br />
                 <button type="submit" onClick={addGroup}>Add Group</button>
-                {error ? <p className="createError">Group could not be created<br />Double-check field inputs</p> : ""}
+                {error ? <p className="createError">{error}</p> : ""}
             </form>}
             <table className='mainTable'>
                 <thead>
@@ -111,7 +116,7 @@ export default function GroupList({token}) {
                         <th>Group Name</th>
                         <th>Type</th>
                         <th># Users</th>
-                        <th>Delete</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,7 +130,7 @@ export default function GroupList({token}) {
                                 </td>
                                 <td>{ele.group_type}</td>
                                 <td>{ele.num_users}</td>
-                                <td><button className="iconButton" title="Delete Group" onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button></td>
+                                <td><button className="iconButton" title="Edit Group Details" onClick={() => { navigate(`/groups/${ele.group_id}`) }}><BiPencil /></button><button className="iconButton" title="Delete Group" onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button></td>
                             </tr>
                         )
                     })}
