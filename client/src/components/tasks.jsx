@@ -197,7 +197,6 @@ export default function TaskList() {
                                 const post = await response.json();
                             } catch (error) {
                                 console.error(error)
-                                throw new Error(`${error.message}`)
                             }
                         }                           
                         return (

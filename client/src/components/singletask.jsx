@@ -9,11 +9,6 @@ export default function SingleTask() {
     const [task, setTask] = useState({})
     const [completed, setCompleted] = useState(false)
     const [deadline, setDeadline] = useState("")
-    const [location, setLocation] = useState("")
-    const [street, setStreet] = useState("")
-    const [city, setCity] = useState("")
-    const [state, setState] = useState("")
-    const [zipcode, setZipcode] = useState("")
     const [user, setUser] = useState("")
     const [name, setName] = useState("")
     const [last, setLast] = useState("")
@@ -28,7 +23,6 @@ export default function SingleTask() {
                 const data = await res.json()
                 setTask(data)
                 setDeadline(data.deadline.substring(0, 10))
-                setLocation(data.location_id)
                 setUser(data.assigned_to)
                 setCompleted(data.completed)
             }
@@ -38,21 +32,6 @@ export default function SingleTask() {
         }
         fetchTask()
     }, [])
-
-    async function fetchLocation() {
-        try {
-            const res = await fetch(`${url}/locations/${location}`)
-            const data = await res.json()
-            setStreet(data.street)
-            setCity(data.city)
-            setState(data.state)
-            setZipcode(data.zipcode)
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
-    fetchLocation();
 
     async function fetchUser() {
         try {
@@ -85,9 +64,10 @@ export default function SingleTask() {
                     {completed ? <td>Done</td> : <td>Incomplete</td>}
                 </tr>
             </table>
-            {/* {location > 1 ? <p>Location:<br />{street}<br />{city}, {state} {zipcode}</p> : "Location: Not Specified"} */}
             {task.details ? <p>Details: {task.details}</p> : ""}
-            {!completed ? <button className="iconButton" onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button> : <button className="iconButton" onClick={() => { markIncomplete(task.task_id) }}><BiCircle /> Reopen Task</button>}
+            {!completed ? 
+            <button className="iconButton" onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button> 
+            : <button className="iconButton" onClick={() => { markIncomplete(task.task_id) }}><BiCircle /> Reopen Task</button>}
             <br /><br />
             <button onClick={() => { navigate(-1) }}><BiChevronLeft /> Back</button>
             <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}><BiTrashAlt /> Delete</button>

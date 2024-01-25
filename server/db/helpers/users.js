@@ -6,7 +6,8 @@ const getAllUsers = async () => {
         const { rows }
             = await client.query(`
             SELECT *
-            FROM users;
+            FROM users
+            ORDER BY 3,2;
         `)
         return rows
     } catch (error) {
