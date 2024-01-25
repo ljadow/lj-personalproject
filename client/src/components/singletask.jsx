@@ -48,29 +48,34 @@ export default function SingleTask() {
     fetchUser();
 
     return (
-        <div id='SingleTask'>
-            <h2 key={task.task_id}>{task.title}</h2>
-            <table>
-                <tr>
-                    <th>Assigned to</th>
-                    <th>Deadline</th>
-                    <th>Task Type</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>{name} {last}.</td>
-                    <td>{deadline}</td>
-                    <td>{task.task_type}</td>
-                    {completed ? <td>Done</td> : <td>Incomplete</td>}
-                </tr>
-            </table>
-            {task.details ? <p>Details: {task.details}</p> : ""}
-            {!completed ? 
-            <button className="iconButton" onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button> 
-            : <button className="iconButton" onClick={() => { markIncomplete(task.task_id) }}><BiCircle /> Reopen Task</button>}
-            <br /><br />
-            <button onClick={() => { navigate(-1) }}><BiChevronLeft /> Back</button>
-            <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}><BiTrashAlt /> Delete</button>
-        </div>
+        <>
+            <div id='SingleTask'>
+                <h2 key={task.task_id}>{task.title}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Assigned to</th>
+                            <th>Deadline</th>
+                            <th>Task Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{name} {last}.</td>
+                            <td>{deadline}</td>
+                            <td>{task.task_type}</td>
+                            {completed ? <td>Done</td> : <td>Incomplete</td>}
+                        </tr>
+                    </tbody>
+                </table>
+                {task.details ? <p>Details: {task.details}</p> : ""}
+                {!completed
+                    ? <button  onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button>
+                    : <button  onClick={() => { markIncomplete(task.task_id) }}><BiCircle /> Reopen Task</button>}
+                <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}><BiTrashAlt /> Delete</button>
+            </div>
+            <button onClick={() => { navigate(-1) }}><BiChevronLeft /> Go Back</button>
+        </>
     )
 }

@@ -1,6 +1,3 @@
-import { useParams, useNavigate } from 'react-router-dom'
-import { useEffect, useState } from "react"
-
 export default async function markComplete(taskid) {
     try {
         const response = await fetch(`http://localhost:8080/api/tasks/${taskid}`, {

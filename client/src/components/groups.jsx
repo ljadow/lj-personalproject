@@ -83,15 +83,15 @@ export default function GroupList({ token }) {
             window.location.reload();
         }
         catch (error) {
-            setDeleteError("Cannot delete group that has users")
+            setDeleteError("Cannot delete group with users")
             console.log(error)
         }
     }
 
     return (
         <>
-            <button onClick={setForm} title="Add New Group"><BiPlus /> Group</button>
-            {showForm && <form>
+            <button onClick={setForm} title="Add New Group" className='formshow'><BiPlus /> Group</button>
+            {showForm && <form className='addForm'>
                 <label name="name">Group Name: </label>
                 <input
                     for="name"
@@ -123,14 +123,19 @@ export default function GroupList({ token }) {
                     {count.map((ele) => {
                         return (
                             <tr key={ele.group_id}>
-                                <td title="Click to Show Users" onClick={() => {
-                                    fetchUsers(ele.group_id); showUsers(ele.group_id)
-                                }}>{ele.group_name}
-                                    {show && ele.group_id === showId && users.length > 0 ? <ul id="groupusers">Users: {users.map((user) => <li key={user.user_id}>{user.first_name} {user.last_name}</li>)}</ul> : ''}
-                                </td>
+                                <td>{ele.group_name}</td>
                                 <td>{ele.group_type}</td>
-                                <td>{ele.num_users}</td>
-                                <td><button className="iconButton" title="Edit Group Details" onClick={() => { navigate(`/groups/${ele.group_id}`) }}><BiPencil /></button><button className="iconButton" title="Delete Group" onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button></td>
+                                <td className="clickable" title="Click to Show Users" onClick={() => {
+                                    fetchUsers(ele.group_id); showUsers(ele.group_id)
+                                }}>{ele.num_users}
+                                    {show && ele.group_id === showId && users.length > 0
+                                        ? <ul id="groupusers"> {users.map((user) => <li key={user.user_id}>{user.first_name} {user.last_name}</li>)}</ul>
+                                        : ''}
+                                </td>
+                                <td>
+                                    <button className="iconButton" title="Edit Group Details" onClick={() => { navigate(`/groups/${ele.group_id}`) }}><BiPencil /></button>
+                                    <button className="iconButton" title="Delete Group" onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button>
+                                </td>
                             </tr>
                         )
                     })}

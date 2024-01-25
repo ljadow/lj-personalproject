@@ -55,7 +55,7 @@ export default function EditUser() {
         event.preventDefault();
         setError("");
         try {
-            if (groupid==null) {
+            if (groupid == null) {
                 const response = await fetch(`http://localhost:8080/api/users/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", },
@@ -108,7 +108,9 @@ export default function EditUser() {
                     onChange={(e) => { setLastname(e.target.value) }}
                 />
                 <br />
-                Group: <select onChange={(e) => { setGroupid(e.target.value) }}>
+
+                <label>Group:</label>
+                <select onChange={(e) => { setGroupid(e.target.value) }}>
                     <option selected="true" disabled="disabled" > {current} </option>
                     {groups.map((group) => {
                         return (<option value={group.group_id}>{group.name}</option>)

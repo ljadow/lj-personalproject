@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteTask } from './taskUpdates';
-import { BiTrashAlt, BiInfoCircle, BiCheckSquare, BiSquare, BiPlus } from "react-icons/bi";
+import { BiTrashAlt, BiInfoCircle, BiPlus, BiCheckbox } from "react-icons/bi";
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([]);
@@ -18,7 +18,6 @@ export default function TaskList() {
     const navigate = useNavigate();
     //search query
     const [query, setQuery] = useState("");
-    const [status, setStatus] = useState(null);
 
     useEffect(() => {
         async function fetchTasks() {
@@ -77,46 +76,21 @@ export default function TaskList() {
         }
     }
 
-    // function setInit(complete) {
-    //     console.log("in init")
-    //     setStatus(complete)
-    //     console.log(status)
-    //     console.log("after init")
-    // }
-
-    async function changeStatus(id) {
-        try {
-            const response = await fetch(`http://localhost:8080/api/tasks/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json", },
-                body: JSON.stringify({
-                    completed: status
-                })
-            })
-            const APIpost = await response.json();
-            // window.location.reload()
-        }//try close
-        catch (error) {
-            setError(error.message)
-            console.log(error)
-        }
-    }
-
     const filteredTasks = useMemo(() =>
         tasks.filter((task) => (
             task.title.toLowerCase().includes(query.toLowerCase())
-            // || task.completed==status
-        )),
-        [tasks, query, status]
+        )), [tasks, query]
     );
 
     return (
         <>
-            <button onClick={setForm} title="Add New Task"><BiPlus /> Task</button>
+            <button onClick={setForm} title="Add New Task" className='formshow'><BiPlus /> Task</button>
             {showForm &&
                 <form onSubmit={addTask} className="addForm">
-                    * indicates a required field <br />
-                    *Assign to: <select onChange={(e) => { setAssigned(e.target.value) }}>
+                    <p id="requiredfield">* indicates a required field </p>
+                    <br />
+                    <label name="assigned_to">*Assign to:</label>
+                    <select for="assigned_to" onChange={(e) => { setAssigned(e.target.value) }}>
                         <option selected="true" disabled="disabled">User</option>
                         {users.map((user) => {
                             return (<option key={user.user_id} value={user.user_id}>{user.first_name} {user.last_name}</option>)
@@ -147,7 +121,7 @@ export default function TaskList() {
                         onChange={(e) => { setDetails(e.target.value) }}
                     />
                     <br />
-                    <label name="deadline">*Deadline </label>
+                    <label name="deadline">*Deadline: </label>
                     <input
                         for="deadline"
                         type="date"
@@ -167,13 +141,7 @@ export default function TaskList() {
                 onChange={e => setQuery(e.target.value)}
                 value={query}
             />
-            {/* <br />
-            <label>Filter by Status</label>
-            <select onChange={(e) => {dropFilter(e)}}>
-                <option value="null">All</option>
-                <option value="true" >Done</option>
-                <option value="false" >To Do</option>
-            </select> */}
+            <br />
             <table className="mainTable">
                 <thead>
                     <tr>
@@ -198,32 +166,31 @@ export default function TaskList() {
                             } catch (error) {
                                 console.error(error)
                             }
-                        }                           
+                        }
                         return (
-                    <>
-                        <tr key={task.task_id}>
-                            <td>
-                                <input
-                                    id="taskStatus"
-                                    type="checkbox"
-                                    defaultChecked={task.completed}
-                                    onChange={(e)=>{handleCheck(e.target.checked)}}
-                                >
-                                </input>
-                            </td>
-                            <td id="taskTitle">{task.title}</td>
-                            <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
-                            <td>
-                                <button className="iconButton" title="See Info" onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
-                                <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
-                            </td>
-                        </tr>
-                    </>
-                    )
+                            <>
+                                <tr key={task.task_id}>
+                                    <td>
+                                        <input
+                                            id="taskStatus"
+                                            type="checkbox"
+                                            defaultChecked={task.completed}
+                                            onChange={(e) => { handleCheck(e.target.checked) }}
+                                        >
+                                        </input>
+                                    </td>
+                                    <td id="taskTitle">{task.title}</td>
+                                    <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
+                                    <td>
+                                        <button className="iconButton" title="See Info" onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
+                                        <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
+                                    </td>
+                                </tr>
+                            </>
+                        )
                     })}
                 </tbody>
             </table>
         </>
     )
-    {/* <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td> */ }
 }

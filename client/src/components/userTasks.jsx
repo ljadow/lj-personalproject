@@ -23,24 +23,37 @@ export default function UserTasks() {
     }, [])
 
     return (
-        <div id='userTasks'>
-            <h4>To Do</h4>
-            {tasks.map((task) => {
-                if (task.completed == false) {
-                    return (
-                        <li onClick={() => { navigate(`/tasks/${task.task_id}`) }}>{task.title}</li>
-                    )
-                }
-            })}
-            <h4>Completed</h4>
-            {tasks.map((task) => {
-                if (task.completed == true) {
-                    return (
-                        <li onClick={() => { navigate(`/tasks/${task.task_id}`) }}>{task.title}</li>
-                    )
-                }
-            })}
+        <>
+            <div id='userTasks'>
+                <h4>To Do</h4>
+                {tasks.map((task) => {
+                    if (task.completed == false) {
+                        return (
+                            <li
+                                title="Click for Details"
+                                className='clickable'
+                                onClick={() => { navigate(`/tasks/${task.task_id}`) }}>
+                                {task.title}
+                            </li>
+                        )
+                    }
+                })}
+                <br/>
+                <h4>Completed</h4>
+                {tasks.map((task) => {
+                    if (task.completed == true) {
+                        return (
+                            <li
+                                title="Click for Details"
+                                className='clickable'
+                                onClick={() => { navigate(`/tasks/${task.task_id}`) }}>
+                                {task.title}
+                            </li>
+                        )
+                    }
+                })}
+            </div>
             <button onClick={() => { navigate(-1) }}>Back to All Users</button>
-        </div>
+        </>
     )
 }

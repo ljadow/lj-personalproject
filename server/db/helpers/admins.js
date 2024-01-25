@@ -44,7 +44,7 @@ const getAdminbyUsername = async (username) => {
             `
       SELECT * 
       FROM admins
-      WHERE admins.username = '${username}'
+      WHERE admins.username = '${username}';
       `
         );
         return admin;

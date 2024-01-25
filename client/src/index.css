@@ -10,10 +10,10 @@ a {
 }
 
 a:hover {
-  color: #205d88;
   border-radius: 10px;
   font-family: inherit;
   background-color: #e4eced;
+  color: #1d547b;
   cursor: pointer;
   transition: background-color 0.15s;
 }
@@ -49,14 +49,12 @@ button:hover {
   background-color: #e4eced;
 }
 
-button:focus, button:focus-visible {
+button:focus,
+button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
 /* ^ preset react styling  --- V personal styling */
-#logout{
-  
-}
 
 #navBar {
   display: flex;
@@ -66,7 +64,7 @@ button:focus, button:focus-visible {
   padding: 1em;
   align-items: center;
   position: sticky;
-  padding: 10px 30px 10px 20px;
+  padding: 10px 20px;
   height: 2em;
 }
 
@@ -76,6 +74,7 @@ button:focus, button:focus-visible {
   border-radius: 10em;
   padding: .5em 1em;
   margin: 1em 0;
+  box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.06);
 }
 
 .mainTable {
@@ -93,11 +92,11 @@ button:focus, button:focus-visible {
   margin: 0 2vw;
 }
 
-#taskDeadline{
+#taskDeadline {
   width: 8vw;
 }
 
-#taskActions{
+#taskActions {
   width: 6vw;
 }
 
@@ -107,10 +106,89 @@ ul {
   list-style-type: none;
 }
 
-.deleteError{
+.deleteError,
+.createError {
   background-color: red;
   color: white;
-  padding: .25em;
-  margin: .25em;
-  border-radius: 20em;
+  text-align: center;
+  width: 30vw;
+  padding: 1em;
+  margin: .5em auto;
+  border-radius: 20px;
+}
+
+#groupusers {
+  font-size: smaller;
+  font-style: italic;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  color: #389ae0;
+  transition: color 0.15s;
+}
+
+.formshow {
+  margin: 0 0 1rem 0;
+}
+
+#SingleTask,
+#userTasks {
+  border-style: double;
+  border-radius: 15px;
+  padding: 1em;
+  background-color: #3e78a1;
+  color: white;
+}
+
+#userTasks>.clickable:hover {
+  color: #c0d2df;
+}
+
+h1,
+h2,
+h4 {
+  margin: .25em 0 1em 0;
+}
+
+#requiredfield {
+  margin: 0;
+  padding: 0;
+  font-size: smaller;
+}
+
+form>input,
+select {
+  border-radius: 5px;
+  border-width: 1px;
+  width: 10rem;
+  height: 1.5rem;
+  padding: 0 2px;
+  margin: .2rem;
+  font-family: inherit;
+  box-sizing: inherit;
+}
+
+label {
+  display: inline-block;
+  text-align: right;
+  width: 6rem;
+}
+
+svg {
+  vertical-align: bottom;
+  margin: 1px 1px;
+}
+
+.iconButton {
+  border-radius: 10rem;
+  background-color: #389ae0;
+  color: white;
+}
+
+.iconButton:hover {
+  background-color: #236695;
 }

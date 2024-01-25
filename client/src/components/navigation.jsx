@@ -22,7 +22,7 @@ export default function Navigation({ token, setToken }) {
             <Link to='/tasks'>Tasks</Link>
             <Link to='/groups'>Groups</Link>
             <Link to='/users'>Users</Link>
-            <button id="logout" onClick={() => { logOut() }}>Log Out</button>
+            <Link id="logout" onClick={() => { logOut() }}>Log Out</Link>
         </nav>
     )
 }

@@ -57,7 +57,7 @@ export default function userList() {
             window.location.reload();
         }
         catch (error) {
-            setDeleteError("Cannot delete user if tasks are assigned to them")
+            setDeleteError("Cannot delete user with tasks")
             console.log(error)
         }
     }
@@ -86,8 +86,8 @@ export default function userList() {
 
     return (
         <>
-            <button onClick={setForm} title="Add New User"><BiPlus /> User</button>
-            {showForm && <form>
+            <button onClick={setForm} title="Add New User" className='formshow'><BiPlus /> User</button>
+            {showForm && <form className='addForm'>
                 <label name="first_name">First Name: </label>
                 <input
                     for="first_name"
@@ -104,7 +104,8 @@ export default function userList() {
                     onChange={(e) => { setLastname(e.target.value) }}
                 />
                 <br />
-                Group: <select onChange={(e) => { setGroupid(e.target.value) }}>
+                <label>Group:</label>
+                <select onChange={(e) => { setGroupid(e.target.value) }}>
                     <option selected="true" disabled="disabled">Group Name</option>
                     {groups.map((group) => {
                         return (<option key={group.group_id} value={group.group_id}>{group.name}</option>)
@@ -129,7 +130,7 @@ export default function userList() {
                             <tr key={user.id}>
                                 <td>{user.first}</td>
                                 <td>{user.last}</td>
-                                {user.tasks > 0 ? <td onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
+                                {user.tasks > 0 ? <td className="clickable" title="Click to View Tasks" onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
                                 <td><button className="iconButton" title="Edit User Details" onClick={() => { navigate(`/users/${user.id}`) }}><BiPencil /></button>
                                     <button className="iconButton" title="Delete User" onClick={() => { deleteUser(user.id) }}><BiTrashAlt /></button></td>
                             </tr>
