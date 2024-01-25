@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { deleteTask } from './taskUpdates';
-import { BiTrashAlt, BiInfoCircle, BiCheckSquare, BiSquare } from "react-icons/bi";
+import { BiTrashAlt, BiInfoCircle, BiCheckSquare, BiSquare, BiPlus } from "react-icons/bi";
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([]);
@@ -112,9 +112,9 @@ export default function TaskList() {
 
     return (
         <>
-            <button onClick={setForm}>Add New Task</button>
+            <button onClick={setForm} title="Add New Task"><BiPlus /> Task</button>
             {showForm &&
-                <form onSubmit={addTask}>
+                <form onSubmit={addTask} className="addForm">
                     * indicates a required field <br />
                     *Assign to: <select onChange={(e) => { setAssigned(e.target.value) }}>
                         <option selected="true" disabled="disabled">User</option>
@@ -156,13 +156,14 @@ export default function TaskList() {
                     />
                     <br />
                     <button type="submit" onClick={addTask}>Add to List</button>
-                    {error ? <p id="taskCreateError">Task could not be created<br />Double-check all field inputs</p> : ""}
+                    {error ? <p className="createError">Task could not be created<br />Double-check all field inputs</p> : ""}
                 </form>
             }
             <br />
             <input
+                id="taskSearch"
+                placeholder='Search for tasks...'
                 label="Search"
-                placeholder="Search by task"
                 onChange={e => setQuery(e.target.value)}
                 value={query}
             />
@@ -173,13 +174,13 @@ export default function TaskList() {
                 <option value="true" >Done</option>
                 <option value="false" >To Do</option>
             </select> */}
-            <table>
+            <table className="mainTable">
                 <thead>
                     <tr>
-                        <th>Status</th>
-                        <th>Tasks</th>
-                        <th>Deadline</th>
-                        <th>Actions</th>
+                        <th id="taskStatus">Status</th>
+                        <th id="taskTitle">Task</th>
+                        <th id="taskDeadline">Deadline</th>
+                        <th id="taskActions">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -190,17 +191,18 @@ export default function TaskList() {
                                     {/* <td>{task.completed ? <BiCheckSquare /> : <BiSquare />}</td> */}
                                     <td>
                                         <input
+                                            id="taskStatus"
                                             type="checkbox"
                                             defaultChecked={task.completed}
-                                            onClick={(e) => { console.log("before status:", status);setStatus(e.target.checked); changeStatus(task.task_id);console.log("after status:", status)}}
+                                            onClick={(e) => { console.log("before status:", status); setStatus(e.target.checked); changeStatus(task.task_id); console.log("after status:", status) }}
                                         >
                                         </input>
                                     </td>
-                                    <td>{task.title}</td>
+                                    <td id="taskTitle">{task.title}</td>
                                     <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
                                     <td>
-                                        <button onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
-                                        <button onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
+                                        <button className="iconButton" title="See Info" onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
+                                        <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
                                     </td>
                                 </tr>
                             </>

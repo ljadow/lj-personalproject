@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BiPencil, BiTrashAlt } from "react-icons/bi";
+import { BiPencil, BiTrashAlt, BiPlus } from "react-icons/bi";
 
 
 
@@ -86,7 +86,7 @@ export default function userList() {
 
     return (
         <>
-            <button onClick={setForm}>Add New User</button>
+            <button onClick={setForm} title="Add New User"><BiPlus /> User</button>
             {showForm && <form>
                 <label name="first_name">First Name: </label>
                 <input
@@ -112,9 +112,9 @@ export default function userList() {
                 </select>
                 <br />
                 <button type="submit" onClick={addUser}>Add User</button>
-                {error ? <p id="taskCreateError">User could not be created<br />Double-check all field inputs</p> : ""}
+                {error ? <p className="createError">User could not be created<br />Double-check all field inputs</p> : ""}
             </form>}
-            <table>
+            <table className='mainTable'>
                 <thead>
                     <tr>
                         <th>First Name</th>
@@ -130,14 +130,14 @@ export default function userList() {
                                 <td>{user.first}</td>
                                 <td>{user.last}</td>
                                 {user.tasks > 0 ? <td onClick={() => { navigate(`/tasks/user/${user.id}`) }}>{user.tasks}</td> : <td>{user.tasks}</td>}
-                                <td><button onClick={() => { navigate(`/users/${user.id}`) }}><BiPencil /></button>
-                                    <button onClick={() => { deleteUser(user.id) }}><BiTrashAlt /></button></td>
+                                <td><button className="iconButton" title="Edit User Details" onClick={() => { navigate(`/users/${user.id}`) }}><BiPencil /></button>
+                                    <button className="iconButton" title="Delete User" onClick={() => { deleteUser(user.id) }}><BiTrashAlt /></button></td>
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
-            {deleteError}
+            {deleteError && <p className='deleteError'>{deleteError}</p>}
         </>
     )
 }

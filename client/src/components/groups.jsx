@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BiPencil, BiTrashAlt } from "react-icons/bi";
+import { BiPlus, BiTrashAlt } from "react-icons/bi";
 
 
 export default function GroupList({token}) {
@@ -85,7 +85,7 @@ export default function GroupList({token}) {
 
     return (
         <>
-            <button onClick={setForm}>Add New Group</button>
+            <button onClick={setForm} title="Add New Group"><BiPlus /> Group</button>
             {showForm && <form>
                 <label name="name">Group Name: </label>
                 <input
@@ -103,9 +103,9 @@ export default function GroupList({token}) {
                     onChange={(e) => { setGrouptype(e.target.value) }}
                 /><br />
                 <button type="submit" onClick={addGroup}>Add Group</button>
-                {error ? <p id="taskCreateError">Group could not be created<br />Double-check field inputs</p> : ""}
+                {error ? <p className="createError">Group could not be created<br />Double-check field inputs</p> : ""}
             </form>}
-            <table>
+            <table className='mainTable'>
                 <thead>
                     <tr>
                         <th>Group Name</th>
@@ -118,20 +118,20 @@ export default function GroupList({token}) {
                     {count.map((ele) => {
                         return (
                             <tr key={ele.group_id}>
-                                <td onClick={() => {
+                                <td title="Click to Show Users" onClick={() => {
                                     fetchUsers(ele.group_id); showUsers(ele.group_id)
                                 }}>{ele.group_name}
-                                    {show && ele.group_id === showId && users.length > 0 ? <table id="groupusers">Users: {users.map((user) => <tr key={user.user_id}>{user.first_name} {user.last_name}</tr>)}</table> : ''}
+                                    {show && ele.group_id === showId && users.length > 0 ? <ul id="groupusers">Users: {users.map((user) => <li key={user.user_id}>{user.first_name} {user.last_name}</li>)}</ul> : ''}
                                 </td>
                                 <td>{ele.group_type}</td>
                                 <td>{ele.num_users}</td>
-                                <td><button onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button></td>
+                                <td><button className="iconButton" title="Delete Group" onClick={() => { deleteGroup(ele.group_id) }}><BiTrashAlt /></button></td>
                             </tr>
                         )
                     })}
                 </tbody>
             </table>
-            {deleteError}
+            {deleteError && <p className='deleteError'>{deleteError}</p>}
         </>
     )
 }
