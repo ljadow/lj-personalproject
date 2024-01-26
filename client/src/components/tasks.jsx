@@ -7,16 +7,13 @@ export default function TaskList() {
     const [tasks, setTasks] = useState([]);
     const [users, setUsers] = useState([]);
     const [showForm, setShowForm] = useState(false);
-    //variables for the form submit
     const [assigned, setAssigned] = useState(null)
     const [title, setTitle] = useState("")
     const [details, setDetails] = useState("")
     const [tasktype, setTasktype] = useState("")
     const [deadline, setDeadline] = useState("")
     const [error, setError] = useState("")
-    //navigate
     const navigate = useNavigate();
-    //search query
     const [query, setQuery] = useState("");
 
     useEffect(() => {
@@ -67,9 +64,10 @@ export default function TaskList() {
                     })
                 })
                 const APIpost = await response.json();
-                window.location.reload()
-            }//else close
-        }//try close
+                // navigate(`/tasks/${APIpost.task_id}`)
+                window.location.reload(false);
+            }
+        }
         catch (error) {
             setError(error.message)
             console.log(error)
@@ -134,13 +132,15 @@ export default function TaskList() {
                 </form>
             }
             <br />
-            <input
-                id="taskSearch"
-                placeholder='Search for tasks...'
-                label="Search"
-                onChange={e => setQuery(e.target.value)}
-                value={query}
-            />
+            <div id="taskfilters">
+                <input
+                    id="taskSearch"
+                    placeholder='Search for tasks...'
+                    label="Search"
+                    onChange={e => setQuery(e.target.value)}
+                    value={query}
+                />
+            </div>
             <br />
             <table className="mainTable">
                 <thead>

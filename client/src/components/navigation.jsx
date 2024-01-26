@@ -8,6 +8,7 @@ export default function Navigation({ token, setToken }) {
                 method: "POST"
             });
             const result = await response.json();
+            console.log(token)
             setToken(null)
             nav("/")
             return result
@@ -22,7 +23,7 @@ export default function Navigation({ token, setToken }) {
             <Link to='/tasks'>Tasks</Link>
             <Link to='/groups'>Groups</Link>
             <Link to='/users'>Users</Link>
-            <Link id="logout" onClick={() => { logOut() }}>Log Out</Link>
+            <a id="logout" onClick={() => { logOut() }}>Log Out</a>
         </nav>
     )
 }
