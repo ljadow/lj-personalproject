@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import { BiPlus, BiTrashAlt, BiPencil } from "react-icons/bi";
+import { useState, useEffect, useContext } from 'react'
+import { useNavigate } from "react-router-dom"
+import { BiPlus, BiTrashAlt, BiPencil } from "react-icons/bi"
 
 export default function GroupList({ token }) {
-    const [count, setCount] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [show, setShow] = useState(false);
-    const [showForm, setShowForm] = useState(false);
-    const [showId, setShowId] = useState(null);
-    const [error, setError] = useState("");
-    const [deleteError, setDeleteError] = useState("");
-    const [groupname, setGroupname] = useState("");
-    const [grouptype, setGrouptype] = useState("");
-    const navigate = useNavigate();
+    const [count, setCount] = useState([])
+    const [users, setUsers] = useState([])
+    const [show, setShow] = useState(false)
+    const [showForm, setShowForm] = useState(false)
+    const [showId, setShowId] = useState(null)
+    const [error, setError] = useState("")
+    const [deleteError, setDeleteError] = useState("")
+    const [groupname, setGroupname] = useState("")
+    const [grouptype, setGrouptype] = useState("")
+    const navigate = useNavigate()
+    const url = useContext(baseUrl)
 
     function setForm() {
         setShowForm(!showForm)
@@ -27,8 +28,8 @@ export default function GroupList({ token }) {
     useEffect(() => {
         async function fetchCounts() {
             try {
-                const req = await fetch("http://localhost:8080/api/user-group/count");
-                const res = await req.json();
+                const req = await fetch(`${url}/api/user-group/count`)
+                const res = await req.json()
                 setCount(res)
             } catch (error) {
                 console.log(error.message)
@@ -38,8 +39,8 @@ export default function GroupList({ token }) {
 
     async function fetchUsers(groupid) {
         try {
-            const req = await fetch(`http://localhost:8080/api/users/group/${groupid}`);
-            const res = await req.json();
+            const req = await fetch(`${url}/api/users/group/${groupid}`)
+            const res = await req.json()
             setUsers(res)
         } catch (error) {
             console.log(error.message)
@@ -47,13 +48,13 @@ export default function GroupList({ token }) {
     }
 
     async function addGroup(event) {
-        event.preventDefault();
-        setError("");
+        event.preventDefault()
+        setError("")
         try {
             if (groupname.length > 50 || grouptype.length > 50) {
                 setError("Inputs must be fewer than 50 characters")
             } else {
-                const response = await fetch("http://localhost:8080/api/groups", {
+                const response = await fetch(`${url}/api/groups`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json", },
                     body: JSON.stringify({
@@ -61,7 +62,7 @@ export default function GroupList({ token }) {
                         type: grouptype
                     })
                 })
-                const APIpost = await response.json();
+                const APIpost = await response.json()
                 // window.location.reload();
                 navigate(`/groups/${APIpost.group_id}`)
             }
@@ -74,14 +75,14 @@ export default function GroupList({ token }) {
 
     async function deleteGroup(groupid) {
         try {
-            const response = await fetch(`http://localhost:8080/api/groups/${groupid}`, {
+            const response = await fetch(`${url}/api/groups/${groupid}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 method: "DELETE",
             })
-            const result = await response.json();
-            window.location.reload();
+            const result = await response.json()
+            window.location.reload()
         }
         catch (error) {
             setDeleteError("Cannot delete group with users")

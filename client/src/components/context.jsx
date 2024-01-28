@@ -1,3 +1,3 @@
-import { createContext } from "react";
+import { createContext } from "react"
 
-export const baseUrl = createContext("http://localhost:8080/api")
+export const baseUrl = createContext("https://tasklist-api-juuc.onrender.com")

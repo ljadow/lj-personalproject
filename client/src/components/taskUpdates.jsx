@@ -1,6 +1,10 @@
+import { useContext } from "react"
+
 export default async function markComplete(taskid) {
+    const url = useContext(baseUrl)
+
     try {
-        const response = await fetch(`http://localhost:8080/api/tasks/${taskid}`, {
+        const response = await fetch(`${url}/api/tasks/${taskid}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify({
@@ -17,15 +21,17 @@ export default async function markComplete(taskid) {
 }
 
 export async function markIncomplete(taskid) {
+    const url = useContext(baseUrl)
+
     try {
-        const response = await fetch(`http://localhost:8080/api/tasks/${taskid}`, {
+        const response = await fetch(`${url}/api/tasks/${taskid}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify({
                 completed: false,
             })
         })
-        const APIpost = await response.json();
+        const APIpost = await response.json()
         console.log(APIpost)
     }
     catch (error) {
@@ -36,14 +42,16 @@ export async function markIncomplete(taskid) {
 
 
 export async function deleteTask(taskId) {
+    const url = useContext(baseUrl)
+
     try {
-        const response = await fetch(`http://localhost:8080/api/tasks/${taskId}`, {
+        const response = await fetch(`${url}/api/tasks/${taskId}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
             method: "DELETE",
         })
-        const result = await response.json();
+        const result = await response.json()
     }
     catch (error) {
         console.log(error)

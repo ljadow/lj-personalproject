@@ -1,25 +1,26 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 export default function EditUser() {
     const { id } = useParams()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const url = useContext(baseUrl)
     //form fields
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
-    const [groupid, setGroupid] = useState(null);
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
+    const [error, setError] = useState("")
+    const [message, setMessage] = useState("")
+    const [groupid, setGroupid] = useState(null)
+    const [firstname, setFirstname] = useState("")
+    const [lastname, setLastname] = useState("")
     //state vars
     const [users, setUsers] = useState([])
     const [groups, setGroups] = useState([])
-    const [current, setCurrent] = useState("");
+    const [current, setCurrent] = useState("")
 
     useEffect(() => {
         async function fetchUser() {
             try {
-                const req = await fetch(`http://localhost:8080/api/users/${id}`);
-                const res = await req.json();
+                const req = await fetch(`${url}/api/users/${id}`)
+                const res = await req.json()
                 fetchGroup(res.group_id)
                 setFirstname(res.first_name)
                 setLastname(res.last_name)
@@ -30,8 +31,8 @@ export default function EditUser() {
         }
         async function fetchGroups() {
             try {
-                const req = await fetch("http://localhost:8080/api/groups");
-                const res = await req.json();
+                const req = await fetch(`${url}/api/groups`)
+                const res = await req.json()
                 setGroups(res)
             } catch (error) {
                 console.log(error.message)
@@ -43,8 +44,8 @@ export default function EditUser() {
 
     async function fetchGroup(id) {
         try {
-            const req = await fetch(`http://localhost:8080/api/groups/${id}`);
-            const res = await req.json();
+            const req = await fetch(`${url}/api/groups/${id}`)
+            const res = await req.json()
             setCurrent(res.name)
         } catch (error) {
             console.log(error.message)
@@ -52,11 +53,11 @@ export default function EditUser() {
     }
 
     async function editUser(event) {
-        event.preventDefault();
-        setError("");
+        event.preventDefault()
+        setError("")
         try {
             if (groupid == null) {
-                const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+                const response = await fetch(`${url}/api/users/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", },
                     body: JSON.stringify({
@@ -67,7 +68,7 @@ export default function EditUser() {
                 const APIpost = await response.json();
                 setMessage("Edit Successful")
             } else {
-                const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+                const response = await fetch(`${url}/api/users/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", },
                     body: JSON.stringify({

@@ -1,26 +1,27 @@
-import { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { deleteTask } from './taskUpdates';
-import { BiTrashAlt, BiInfoCircle, BiPlus, BiCheckbox } from "react-icons/bi";
+import { useState, useEffect, useMemo, useContext} from 'react'
+import { useNavigate } from 'react-router-dom'
+import { deleteTask } from './taskUpdates'
+import { BiTrashAlt, BiInfoCircle, BiPlus } from "react-icons/bi"
 
 export default function TaskList() {
-    const [tasks, setTasks] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [showForm, setShowForm] = useState(false);
+    const [tasks, setTasks] = useState([])
+    const [users, setUsers] = useState([])
+    const [showForm, setShowForm] = useState(false)
     const [assigned, setAssigned] = useState(null)
     const [title, setTitle] = useState("")
     const [details, setDetails] = useState("")
     const [tasktype, setTasktype] = useState("")
     const [deadline, setDeadline] = useState("")
     const [error, setError] = useState("")
-    const navigate = useNavigate();
-    const [query, setQuery] = useState("");
+    const navigate = useNavigate()
+    const url = useContext(baseUrl)
+    const [query, setQuery] = useState("")
 
     useEffect(() => {
         async function fetchTasks() {
             try {
-                const req = await fetch("http://localhost:8080/api/tasks");
-                const res = await req.json();
+                const req = await fetch(`${url}/api/tasks`)
+                const res = await req.json()
                 setTasks(res)
             } catch (error) {
                 console.log(error.message)
@@ -28,8 +29,8 @@ export default function TaskList() {
         }
         async function fetchUsers() {
             try {
-                const req = await fetch("http://localhost:8080/api/users");
-                const res = await req.json();
+                const req = await fetch(`${url}/api/users`)
+                const res = await req.json()
                 setUsers(res)
             } catch (error) {
                 console.log(error.message)
@@ -45,13 +46,13 @@ export default function TaskList() {
     }
 
     async function addTask(event) {
-        event.preventDefault();
-        setError("");
+        event.preventDefault()
+        setError("")
         try {
             if (title.length < 1) {
                 return setError("Your task must include a title")
             } else {
-                const response = await fetch("http://localhost:8080/api/tasks", {
+                const response = await fetch(`${url}/api/tasks`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json", },
                     body: JSON.stringify({
@@ -63,9 +64,9 @@ export default function TaskList() {
                         deadline: deadline,
                     })
                 })
-                const APIpost = await response.json();
+                const APIpost = await response.json()
                 // navigate(`/tasks/${APIpost.task_id}`)
-                window.location.reload(false);
+                window.location.reload(false)
             }
         }
         catch (error) {
@@ -155,7 +156,7 @@ export default function TaskList() {
                     {filteredTasks.map((task) => {
                         async function handleCheck(event) {
                             try {
-                                const response = await fetch(`http://localhost:8080/api/tasks/${task.task_id}`, {
+                                const response = await fetch(`${url}/api/tasks/${task.task_id}`, {
                                     method: "PUT",
                                     headers: { "Content-Type": "application/json", },
                                     body: JSON.stringify({

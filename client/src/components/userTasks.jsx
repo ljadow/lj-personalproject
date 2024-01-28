@@ -1,17 +1,16 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import markComplete from './taskUpdates'
-import { deleteTask, markIncomplete } from './taskUpdates'
+import { useState, useEffect, useContext } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 
 export default function UserTasks() {
-    const { id } = useParams();
-    const [tasks, setTasks] = useState([]);
-    const navigate = useNavigate();
+    const { id } = useParams()
+    const [tasks, setTasks] = useState([])
+    const navigate = useNavigate()
+    const url = useContext(baseUrl)
 
     useEffect(() => {
         async function fetchTasks() {
             try {
-                const res = await fetch(`http://localhost:8080/api/tasks/user/${id}`)
+                const res = await fetch(`${url}/api/tasks/user/${id}`)
                 const data = await res.json()
                 setTasks(data)
             }

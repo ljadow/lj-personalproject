@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login({ setToken }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const nav = useNavigate();
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const nav = useNavigate()
+    const url = useContext(baseUrl)
 
     const logIn = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/api/admins/login`, {
+            const response = await fetch(`${url}/api/admins/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -19,7 +20,7 @@ export default function Login({ setToken }) {
                     password: password
                 })
             });
-            const result = await response.json();
+            const result = await response.json()
             setToken(result.token)
             nav("/tasks")
             return result

@@ -1,27 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BiPencil, BiTrashAlt, BiPlus } from "react-icons/bi";
-
-
+import { useState, useEffect, useContext} from 'react'
+import { useNavigate } from 'react-router-dom'
+import { BiPencil, BiTrashAlt, BiPlus } from "react-icons/bi"
 
 export default function userList() {
-    const navigate = useNavigate();
-    const [users, setUsers] = useState([]);
-    const [groups, setGroups] = useState([]);
-    const [showForm, setShowForm] = useState(false);
-    const [error, setError] = useState("");
-    const [deleteError, setDeleteError] = useState("");
+    const navigate = useNavigate()
+    const url = useContext(baseUrl)
+    const [users, setUsers] = useState([])
+    const [groups, setGroups] = useState([])
+    const [showForm, setShowForm] = useState(false)
+    const [error, setError] = useState("")
+    const [deleteError, setDeleteError] = useState("")
 
     //form variables
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [groupid, setGroupid] = useState(null);
+    const [firstname, setFirstname] = useState("")
+    const [lastname, setLastname] = useState("")
+    const [groupid, setGroupid] = useState(null)
 
     useEffect(() => {
         async function fetchUsers() {
             try {
-                const req = await fetch("http://localhost:8080/api/tasks/users");
-                const res = await req.json();
+                const req = await fetch(`${url}/api/tasks/users`)
+                const res = await req.json()
                 setUsers(res)
             } catch (error) {
                 console.log(error.message)
@@ -29,15 +28,15 @@ export default function userList() {
         }
         async function fetchGroups() {
             try {
-                const req = await fetch("http://localhost:8080/api/groups");
+                const req = await fetch(`${url}/api/groups`);
                 const res = await req.json();
                 setGroups(res)
             } catch (error) {
                 console.log(error.message)
             }
         }
-        fetchUsers();
-        fetchGroups();
+        fetchUsers()
+        fetchGroups()
     }, [])
 
     function setForm() {
@@ -47,7 +46,7 @@ export default function userList() {
 
     async function deleteUser(userId) {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+            const response = await fetch(`${url}/api/users/${userId}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -63,10 +62,10 @@ export default function userList() {
     }
 
     async function addUser(event) {
-        event.preventDefault();
-        setError("");
+        event.preventDefault()
+        setError("")
         try {
-            const response = await fetch("http://localhost:8080/api/users", {
+            const response = await fetch(`${url}/api/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", },
                 body: JSON.stringify({

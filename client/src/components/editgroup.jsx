@@ -1,22 +1,23 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 export default function EditGroup() {
     const { id } = useParams()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const url = useContext(baseUrl)
     //form fields
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
-    const [groupname, setGroupname] = useState("");
-    const [grouptype, setGrouptype] = useState("");
+    const [error, setError] = useState("")
+    const [message, setMessage] = useState("")
+    const [groupname, setGroupname] = useState("")
+    const [grouptype, setGrouptype] = useState("")
     //state vars
     const [group, setGroup] = useState([])
 
     useEffect(() => {
         async function fetchGroup() {
             try {
-                const req = await fetch(`http://localhost:8080/api/groups/${id}`);
-                const res = await req.json();
+                const req = await fetch(`${url}/api/groups/${id}`)
+                const res = await req.json()
                 setGroup(res)
                 setGroupname(res.name)
                 setGrouptype(res.type)
@@ -28,14 +29,14 @@ export default function EditGroup() {
     }, [])
 
     async function putEdit(event) {
-        event.preventDefault();
-        setError("");
-        setMessage("");
+        event.preventDefault()
+        setError("")
+        setMessage("")
         try {
             if (groupname.length > 50 || grouptype.length > 50) {
                 setError("Inputs must be fewer than 50 characters")
             } else {
-                const response = await fetch(`http://localhost:8080/api/groups/${id}`, {
+                const response = await fetch(`${url}/api/groups/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", },
                     body: JSON.stringify({

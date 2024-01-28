@@ -1,13 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
+import { useContext } from "react"
 
 export default function Navigation({ token, setToken }) {
-    const nav = useNavigate();
+    const nav = useNavigate()
+    const url = useContext(baseUrl)
+
     async function logOut() {
         try {
-            const response = await fetch(`http://localhost:8080/api/admins/logout`, {
+            const response = await fetch(`${url}/api/admins/logout`, {
                 method: "POST"
-            });
-            const result = await response.json();
+            })
+            const result = await response.json()
             console.log(token)
             setToken(null)
             nav("/")

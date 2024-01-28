@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react"
 import markComplete from './taskUpdates'
 import { deleteTask, markIncomplete } from './taskUpdates'
 import { baseUrl } from "./context"
-import { BiTrashAlt, BiCircle, BiCheck, BiChevronLeft } from "react-icons/bi";
+import { BiTrashAlt, BiCircle, BiCheck, BiChevronLeft } from "react-icons/bi"
 
 export default function SingleTask() {
     const [task, setTask] = useState({})
