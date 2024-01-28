@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 const dbName = "taskapp";
 
-const client = new Client(`postgres://tasklist_e7f4_user:eIebfEjpQHE3ADC4cdeXHudAkXq2ruui@dpg-cmrccsol5elc73aik70g-a/tasklist_e7f4`)
+const client = new Client(`postgres://tasklist_api_user:pSTEjcvbg9CY8ZmoDtjHuW46enxX3gHa@dpg-cmrchd021fec739r2r4g-a/tasklist_api`)
 
 module.exports = client;
