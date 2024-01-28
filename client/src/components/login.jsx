@@ -5,10 +5,10 @@ export default function Login({ setToken }) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const nav = useNavigate()
-    const url = useContext(baseUrl)
-
+    
     const logIn = async (e) => {
         e.preventDefault();
+        const url = useContext(baseUrl)
         try {
             const response = await fetch(`${url}/api/admins/login`, {
                 method: "POST",

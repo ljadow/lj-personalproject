@@ -26,6 +26,7 @@ export default function GroupList({ token }) {
     }
 
     useEffect(() => {
+        const url = useContext(baseUrl)
         async function fetchCounts() {
             try {
                 const req = await fetch(`${url}/api/user-group/count`)

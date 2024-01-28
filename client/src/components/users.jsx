@@ -17,6 +17,7 @@ export default function userList() {
     const [groupid, setGroupid] = useState(null)
 
     useEffect(() => {
+        const url = useContext(baseUrl)
         async function fetchUsers() {
             try {
                 const req = await fetch(`${url}/api/tasks/users`)

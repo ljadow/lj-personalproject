@@ -5,9 +5,9 @@ export default function UserTasks() {
     const { id } = useParams()
     const [tasks, setTasks] = useState([])
     const navigate = useNavigate()
-    const url = useContext(baseUrl)
 
     useEffect(() => {
+        const url = useContext(baseUrl)
         async function fetchTasks() {
             try {
                 const res = await fetch(`${url}/api/tasks/user/${id}`)

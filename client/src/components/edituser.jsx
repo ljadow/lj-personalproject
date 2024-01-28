@@ -17,6 +17,7 @@ export default function EditUser() {
     const [current, setCurrent] = useState("")
 
     useEffect(() => {
+        const url = useContext(baseUrl)
         async function fetchUser() {
             try {
                 const req = await fetch(`${url}/api/users/${id}`)

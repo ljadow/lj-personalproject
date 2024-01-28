@@ -12,8 +12,9 @@ export default function EditGroup() {
     const [grouptype, setGrouptype] = useState("")
     //state vars
     const [group, setGroup] = useState([])
-
+    
     useEffect(() => {
+        const url = useContext(baseUrl)
         async function fetchGroup() {
             try {
                 const req = await fetch(`${url}/api/groups/${id}`)

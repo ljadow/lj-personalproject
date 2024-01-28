@@ -18,6 +18,7 @@ export default function TaskList() {
     const [query, setQuery] = useState("")
 
     useEffect(() => {
+        const url = useContext(baseUrl)
         async function fetchTasks() {
             try {
                 const req = await fetch(`${url}/api/tasks`)
