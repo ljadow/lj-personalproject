@@ -63,17 +63,17 @@ const getTasksByUserId = async (user_id) => {
     }
 }
 
-const createTask = async ({ completed, assigned_to, title, details, task_type, deadline, location_id }) => {
+const createTask = async ({ completed, assigned_to, title, details, task_type, deadline}) => {
     try {
         const {
             rows: [tasks],
         } = await client.query(
             `
-                INSERT INTO tasks(completed, assigned_to, title, details, task_type, deadline, location_id)
-                VALUES($1, $2, $3, $4, $5, $6, $7)
+                INSERT INTO tasks(completed, assigned_to, title, details, task_type, deadline)
+                VALUES($1, $2, $3, $4, $5, $6)
                 RETURNING *;
             `,
-            [completed, assigned_to, title, details, task_type, deadline, location_id]
+            [completed, assigned_to, title, details, task_type, deadline]
         )
         return tasks
     } catch (error) {

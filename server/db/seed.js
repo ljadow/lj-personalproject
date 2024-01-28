@@ -1,6 +1,6 @@
 const client = require('./client');
 
-// drop tables for tasks, locations, users, and groups
+// drop tables for tasks, users, and groups
 async function dropTables() {
     try {
         console.log('Dropping All Tables...');
@@ -15,7 +15,7 @@ async function dropTables() {
     }
 }
 
-// build tables for tasks, locations, users, and groups
+// build tables for tasks, users, and groups
 async function createTables() {
     try {
         console.log('Building All Tables...');
@@ -38,8 +38,7 @@ async function createTables() {
             title VARCHAR(50) NOT NULL,
             details TEXT,
             task_type VARCHAR(50),
-            deadline DATE NOT NULL,
-            location_id INTEGER REFERENCES locations(location_id)
+            deadline DATE NOT NULL
         );
         CREATE TABLE admins (
             admin_id SERIAL PRIMARY KEY,
@@ -74,11 +73,11 @@ async function createInitialData() {
         `);
         console.log("did users");
         await client.query(`
-        INSERT INTO tasks (assigned_to, completed, title, details, task_type, deadline, location_id)
+        INSERT INTO tasks (assigned_to, completed, title, details, task_type, deadline)
         VALUES
-        (3, false, 'vacuum apartment', 'charge vacuum beforehand', 'chore', '2024-01-30', 1),
-        (3, true, 'do homework', 'check canvas for assignments', 'work', '2024-01-20', 1),
-        (2, false, 'QA Lindsays homework', 'make sure homework deadline is met', 'work', '2024-02-15', 2)
+        (3, false, 'vacuum apartment', 'charge vacuum beforehand', 'chore', '2024-01-30'),
+        (3, true, 'do homework', 'check canvas for assignments', 'work', '2024-01-20'),
+        (2, false, 'QA Lindsays homework', 'make sure homework deadline is met', 'work', '2024-02-15')
         `);
         console.log("did tasks");
         await client.query(`
