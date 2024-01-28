@@ -1,13 +1,14 @@
 import { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { baseUrl } from './context'
 
 export default function UserTasks() {
     const { id } = useParams()
     const [tasks, setTasks] = useState([])
     const navigate = useNavigate()
+    const url = useContext(baseUrl)
 
     useEffect(() => {
-        const url = useContext(baseUrl)
         async function fetchTasks() {
             try {
                 const res = await fetch(`${url}/api/tasks/user/${id}`)

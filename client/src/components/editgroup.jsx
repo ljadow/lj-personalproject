@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { baseUrl } from './context'
 
 export default function EditGroup() {
     const { id } = useParams()

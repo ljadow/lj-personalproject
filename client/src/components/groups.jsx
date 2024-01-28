@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from "react-router-dom"
 import { BiPlus, BiTrashAlt, BiPencil } from "react-icons/bi"
+import { baseUrl } from './context'
 
 export default function GroupList({ token }) {
     const [count, setCount] = useState([])
@@ -26,7 +27,6 @@ export default function GroupList({ token }) {
     }
 
     useEffect(() => {
-        const url = useContext(baseUrl)
         async function fetchCounts() {
             try {
                 const req = await fetch(`${url}/api/user-group/count`)

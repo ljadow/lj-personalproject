@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { deleteTask } from './taskUpdates'
 import { BiTrashAlt, BiInfoCircle, BiPlus } from "react-icons/bi"
+import { baseUrl } from './context'
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([])
@@ -18,7 +19,6 @@ export default function TaskList() {
     const [query, setQuery] = useState("")
 
     useEffect(() => {
-        const url = useContext(baseUrl)
         async function fetchTasks() {
             try {
                 const req = await fetch(`${url}/api/tasks`)

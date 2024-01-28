@@ -17,7 +17,6 @@ export default function SingleTask() {
     const url = useContext(baseUrl)
 
     useEffect(() => {
-        const url = useContext(baseUrl)
         async function fetchTask() {
             try {
                 const res = await fetch(`${url}/tasks/${id}`)

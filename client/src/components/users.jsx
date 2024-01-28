@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BiPencil, BiTrashAlt, BiPlus } from "react-icons/bi"
+import { baseUrl } from './context'
 
 export default function userList() {
     const navigate = useNavigate()
@@ -17,7 +18,6 @@ export default function userList() {
     const [groupid, setGroupid] = useState(null)
 
     useEffect(() => {
-        const url = useContext(baseUrl)
         async function fetchUsers() {
             try {
                 const req = await fetch(`${url}/api/tasks/users`)
