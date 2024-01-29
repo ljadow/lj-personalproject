@@ -64,7 +64,8 @@ export default function GroupList({ token }) {
                     })
                 })
                 const APIpost = await response.json()
-                window.location.reload();
+                // window.location.reload()
+                navigate("/groups")
             }
         }
         catch (error) {
@@ -82,7 +83,8 @@ export default function GroupList({ token }) {
                 method: "DELETE",
             })
             const result = await response.json()
-            window.location.reload()
+            // window.location.reload()
+            navigate("/groups")
         }
         catch (error) {
             setDeleteError("Cannot delete group with users")

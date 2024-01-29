@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 // http://localhost:8080
 
 export default async function markComplete(taskid) {
+    const nav = useNavigate()
     try {
         const response = await fetch(`https://tasklist-api-juuc.onrender.com/api/tasks/${taskid}`, {
             method: "PUT",
@@ -17,9 +18,11 @@ export default async function markComplete(taskid) {
     catch (error) {
         console.log(error.message)
     }
-    window.location.reload()
+    // window.location.reload()
+    nav("/")
 }
 export async function markIncomplete(taskid) {
+    const nav = useNavigate()
     try {
         const response = await fetch(`https://tasklist-api-juuc.onrender.com/api/tasks/${taskid}`, {
             method: "PUT",
@@ -34,11 +37,14 @@ export async function markIncomplete(taskid) {
     catch (error) {
         console.log(error.message)
     }
-    window.location.reload()
+    // window.location.reload()
+    nav("/")
+
 }
 
 
 export async function deleteTask(taskId) {
+    const nav = useNavigate()
     try {
         const response = await fetch(`https://tasklist-api-juuc.onrender.com/api/tasks/${taskId}`, {
             headers: {
@@ -52,7 +58,8 @@ export async function deleteTask(taskId) {
     catch (error) {
         console.log(error)
     }
-    
+    // window.location.reload()
+    nav("/")
 }
 
 

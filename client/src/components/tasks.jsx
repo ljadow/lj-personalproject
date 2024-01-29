@@ -184,7 +184,7 @@ export default function TaskList() {
                                     <td>{new Date(task.deadline).toString().substring(4, 15)}</td>
                                     <td>
                                         <button className="iconButton" title="See Info" onClick={() => { navigate(`/tasks/${task.task_id}`) }}><BiInfoCircle /></button>
-                                        <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id); window.location.reload() }}><BiTrashAlt /></button>
+                                        <button className="iconButton" title="Delete Task" onClick={() => { deleteTask(task.task_id) }}><BiTrashAlt /></button>
                                     </td>
                                 </tr>
                             </>
