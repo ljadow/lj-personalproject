@@ -64,8 +64,7 @@ export default function GroupList({ token }) {
                     })
                 })
                 const APIpost = await response.json()
-                // window.location.reload();
-                navigate(`/groups/${APIpost.group_id}`)
+                window.location.reload();
             }
         }
         catch (error) {

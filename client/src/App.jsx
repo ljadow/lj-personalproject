@@ -6,6 +6,7 @@ import Tasks from './components/tasks'
 import Groups from './components/groups'
 import Users from './components/users'
 import Login from './components/login'
+import Admin from './components/admin'
 import SingleTask from './components/singletask'
 import UserTasks from './components/userTasks'
 import EditUser from './components/edituser'
@@ -18,19 +19,18 @@ function App() {
 
   return (
     <>
-      <h1><BiListCheck/> My Tasks</h1>
+      <h1><BiListCheck /> My Tasks</h1>
       <Navigation setToken={setToken} />
-      {/* {token && <><h1>My Tasks</h1><Navigation setToken={setToken} /></>} */}
       <Routes>
-        <Route path='/' element={<Homepage />} />
-        <Route path='/tasks' element={<Tasks token={token} />} />
-        <Route path='/groups' element={<Groups token={token} />} />
-        <Route path='/users' element={<Users token={token} />} />
+        <Route path='/' element={<Tasks />} />
+        <Route path='/groups' element={<Groups />} />
+        <Route path='/users' element={<Users />} />
         <Route path='/login' element={<Login setToken={setToken} />} />
-        <Route path='/groups/:id' element={<EditGroup token={token} />} />
-        <Route path='/users/:id' element={<EditUser token={token} />} />
-        <Route path='/tasks/:id' element={<SingleTask token={token} />} />
-        <Route path='/tasks/user/:id' element={<UserTasks token={token} />} />
+        <Route path='/admin' element={<Admin token={token} setToken={setToken} />} />
+        <Route path='/groups/:id' element={<EditGroup />} />
+        <Route path='/users/:id' element={<EditUser />} />
+        <Route path='/tasks/:id' element={<SingleTask />} />
+        <Route path='/tasks/user/:id' element={<UserTasks />} />
       </Routes>
     </>
   )

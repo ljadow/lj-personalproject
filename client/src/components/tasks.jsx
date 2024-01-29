@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useContext} from 'react'
+import { useState, useEffect, useMemo, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { deleteTask } from './taskUpdates'
 import { BiTrashAlt, BiInfoCircle, BiPlus } from "react-icons/bi"
@@ -66,8 +66,7 @@ export default function TaskList() {
                     })
                 })
                 const APIpost = await response.json()
-                // navigate(`/tasks/${APIpost.task_id}`)
-                window.location.reload(false)
+                window.location.reload()
             }
         }
         catch (error) {

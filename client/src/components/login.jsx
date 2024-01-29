@@ -5,11 +5,13 @@ import { baseUrl } from './context'
 export default function Login({ setToken }) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [errormes,setErrormes] = useState('')
     const nav = useNavigate()
     const url = useContext(baseUrl)
     
     const logIn = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        setErrormes("")
         try {
             const response = await fetch(`${url}/api/admins/login`, {
                 method: "POST",
@@ -23,11 +25,11 @@ export default function Login({ setToken }) {
             });
             const result = await response.json()
             setToken(result.token)
-            nav("/tasks")
+            nav("/admin")
             return result
         } catch (error) {
-            console.error("error logging in: ", error)
-            throw new Error(`failed to login: ${error.message}`)
+            console.log(error.message)
+            setErrormes("Login failed - Please try again")
         }
     }
 
@@ -49,7 +51,8 @@ export default function Login({ setToken }) {
                     onChange={(e) => setPassword(e.target.value)} /><br/>
                 <button type="submit">Submit</button>
             </form>
+            {errormes && <p className='deleteError'>{errormes}</p>}
         </>
-    );
+    )
 }
 

@@ -19,7 +19,7 @@ export default function SingleTask() {
     useEffect(() => {
         async function fetchTask() {
             try {
-                const res = await fetch(`${url}/tasks/${id}`)
+                const res = await fetch(`${url}/api/tasks/${id}`)
                 const data = await res.json()
                 setTask(data)
                 setDeadline(data.deadline.substring(0, 10))
@@ -35,7 +35,7 @@ export default function SingleTask() {
 
     async function fetchUser() {
         try {
-            const res = await fetch(`${url}/users/${user}`)
+            const res = await fetch(`${url}/api/users/${user}`)
             const data = await res.json()
             setName(data.first_name)
             const lastname = data.last_name
@@ -71,9 +71,9 @@ export default function SingleTask() {
                 </table>
                 {task.details ? <p>Details: {task.details}</p> : ""}
                 {!completed
-                    ? <button  onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button>
-                    : <button  onClick={() => { markIncomplete(task.task_id) }}><BiCircle /> Reopen Task</button>}
-                <button onClick={() => { deleteTask(task.task_id); navigate("/tasks") }}><BiTrashAlt /> Delete</button>
+                    ? <button onClick={() => { markComplete(task.task_id) }}><BiCheck /> Mark Complete</button>
+                    : <button onClick={() => { markIncomplete(task.task_id) }}><BiCircle /> Reopen Task</button>}
+                <button onClick={() => { deleteTask(task.task_id); navigate("/") }}><BiTrashAlt /> Delete</button>
             </div>
             <button onClick={() => { navigate(-1) }}><BiChevronLeft /> Go Back</button>
         </>
