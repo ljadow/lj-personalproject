@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Homepage from './components/homepage'
 import Navigation from './components/navigation'
 import Tasks from './components/tasks'
 import Groups from './components/groups'
